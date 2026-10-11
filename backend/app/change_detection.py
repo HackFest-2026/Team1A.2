@@ -75,6 +75,10 @@ def get_val_report_tile_paths() -> List[Path]:
         p = Path(line)
         if not p.is_absolute():
             p = ROOT / p
+        elif not p.exists():
+            fallback = ROOT / "runs" / "xview_yolo" / "images" / "val" / p.name
+            if fallback.exists():
+                p = fallback
         if p.exists():
             paths.append(p)
     return paths

@@ -1,0 +1,109 @@
+{
+  "title": "Project Rakshak 2.0 \u2014 Single-Pass Vessel Boost Evaluation on val_report",
+  "dataset_scope": "5 scenes / 21 tiles / 280 vessels (strictly val_report holdout)",
+  "hardware": "NVIDIA GeForce RTX 4060 Laptop GPU",
+  "provenance": "MEASURED",
+  "bootstrap_resamples": 1000,
+  "tuning_note": "Tuning performed strictly on val_tune (40 tiles); single-pass evaluation on val_report without retuning.",
+  "baseline_generalist_yolo11m": {
+    "model": "YOLO11m (20.1M params)",
+    "imgsz": 1024,
+    "metrics": {
+      "map50": 0.1226,
+      "map50_95": 0.0266,
+      "precision": 0.3243,
+      "recall": 0.1714
+    },
+    "bootstrap_ci95": {
+      "map50_ci95": [
+        0.0518,
+        0.2157
+      ],
+      "map50_95_ci95": [
+        0.013,
+        0.0472
+      ],
+      "precision_ci95": [
+        0.1483,
+        0.6191
+      ],
+      "recall_ci95": [
+        0.1372,
+        0.2796
+      ]
+    },
+    "latency_ms": {
+      "mean": 63.74,
+      "p50": 37.96
+    }
+  },
+  "baseline_specialist_yolo11n": {
+    "model": "YOLO11n Vessel Specialist (2.6M params)",
+    "imgsz": 1024,
+    "metrics": {
+      "map50": 0.1553,
+      "map50_95": 0.0583,
+      "precision": 0.3333,
+      "recall": 0.2429
+    },
+    "bootstrap_ci95": {
+      "map50_ci95": [
+        0.0802,
+        0.2467
+      ],
+      "map50_95_ci95": [
+        0.0295,
+        0.0966
+      ],
+      "precision_ci95": [
+        0.2625,
+        0.5586
+      ],
+      "recall_ci95": [
+        0.1293,
+        0.3785
+      ]
+    },
+    "latency_ms": {
+      "mean": 34.52,
+      "p50": 31.79
+    }
+  },
+  "vessel_boost_winner_option_d": {
+    "config": "Horizontal-flip TTA (1024) fused by Weighted Box Fusion (WBF IoU=0.55, conf=0.05)",
+    "model": "YOLO11n Vessel Specialist",
+    "metrics": {
+      "map50": 0.1474,
+      "map50_95": 0.0525,
+      "precision": 0.3557,
+      "recall": 0.2464
+    },
+    "bootstrap_ci95": {
+      "map50_ci95": [
+        0.0725,
+        0.2404
+      ],
+      "map50_95_ci95": [
+        0.0242,
+        0.091
+      ],
+      "precision_ci95": [
+        0.2131,
+        0.4887
+      ],
+      "recall_ci95": [
+        0.1463,
+        0.3816
+      ]
+    },
+    "latency_ms": {
+      "mean": 32.98,
+      "p50": 23.31
+    },
+    "comparison_to_baseline_specialist": {
+      "delta_map50": -0.0079,
+      "relative_gain_pct": "-5.09%",
+      "extra_latency_ms": -1.54
+    }
+  }
+}

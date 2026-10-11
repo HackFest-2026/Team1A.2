@@ -1,0 +1,283 @@
+{
+  "title": "Project Rakshak 2.0 \u2014 Vessel Inference Tuning on val_tune",
+  "dataset_scope": "40 tiles / 169 vessels (strictly val_tune partition, zero overlap with val_report)",
+  "hardware": "NVIDIA GeForce RTX 4060 Laptop GPU",
+  "total_configs_evaluated": 15,
+  "winning_config": {
+    "id": "spec_tta_hflip_1024",
+    "name": "Option d: Horizontal-flip TTA (1024)",
+    "map50": 0.5655,
+    "precision": 0.68,
+    "recall": 0.503,
+    "mean_latency_ms": 23.06,
+    "p50_latency_ms": 22.98,
+    "config_details": {
+      "id": "spec_tta_hflip_1024",
+      "name": "Option d: Horizontal-flip TTA (1024)",
+      "type": "tta",
+      "imgsz": 1024,
+      "conf": 0.05,
+      "wbf_iou": 0.55
+    }
+  },
+  "all_ranked_configs": [
+    {
+      "id": "spec_tta_hflip_1024",
+      "name": "Option d: Horizontal-flip TTA (1024)",
+      "map50": 0.5655,
+      "precision": 0.68,
+      "recall": 0.503,
+      "mean_latency_ms": 23.06,
+      "p50_latency_ms": 22.98,
+      "config_details": {
+        "id": "spec_tta_hflip_1024",
+        "name": "Option d: Horizontal-flip TTA (1024)",
+        "type": "tta",
+        "imgsz": 1024,
+        "conf": 0.05,
+        "wbf_iou": 0.55
+      }
+    },
+    {
+      "id": "fusion_spec1024_gen1024",
+      "name": "Option e: Dual-Model Fusion (Spec 1024 + Gen 1024)",
+      "map50": 0.557,
+      "precision": 0.6891,
+      "recall": 0.4852,
+      "mean_latency_ms": 47.02,
+      "p50_latency_ms": 46.65,
+      "config_details": {
+        "id": "fusion_spec1024_gen1024",
+        "name": "Option e: Dual-Model Fusion (Spec 1024 + Gen 1024)",
+        "type": "dual",
+        "spec_imgsz": 1024,
+        "gen_imgsz": 1024,
+        "conf": 0.05,
+        "wbf_iou": 0.55
+      }
+    },
+    {
+      "id": "combo_spec1280_gen1024_tta",
+      "name": "Combo: Spec 1280 (TTA) + Gen 1024 + WBF",
+      "map50": 0.5402,
+      "precision": 0.6233,
+      "recall": 0.5385,
+      "mean_latency_ms": 69.95,
+      "p50_latency_ms": 68.62,
+      "config_details": {
+        "id": "combo_spec1280_gen1024_tta",
+        "name": "Combo: Spec 1280 (TTA) + Gen 1024 + WBF",
+        "type": "combo_full",
+        "wbf_iou": 0.55,
+        "conf": 0.05
+      }
+    },
+    {
+      "id": "spec_conf_010_wbf_050",
+      "name": "Option c: Conf=0.10, WBF IoU=0.50",
+      "map50": 0.5293,
+      "precision": 0.5843,
+      "recall": 0.574,
+      "mean_latency_ms": 10.73,
+      "p50_latency_ms": 10.31,
+      "config_details": {
+        "id": "spec_conf_010_wbf_050",
+        "name": "Option c: Conf=0.10, WBF IoU=0.50",
+        "type": "wbf_sweep",
+        "conf": 0.1,
+        "wbf_iou": 0.5
+      }
+    },
+    {
+      "id": "spec_sahi_640",
+      "name": "Option b: SAHI slices 640 (overlap 25%)",
+      "map50": 0.5174,
+      "precision": 0.6202,
+      "recall": 0.4734,
+      "mean_latency_ms": 89.31,
+      "p50_latency_ms": 60.27,
+      "config_details": {
+        "id": "spec_sahi_640",
+        "name": "Option b: SAHI slices 640 (overlap 25%)",
+        "type": "sahi",
+        "slice": 640,
+        "conf": 0.05,
+        "wbf_iou": 0.55
+      }
+    },
+    {
+      "id": "spec_tta_hflip_1280",
+      "name": "Option d: Horizontal-flip TTA (1280)",
+      "map50": 0.5131,
+      "precision": 0.6148,
+      "recall": 0.4911,
+      "mean_latency_ms": 32.46,
+      "p50_latency_ms": 32.03,
+      "config_details": {
+        "id": "spec_tta_hflip_1280",
+        "name": "Option d: Horizontal-flip TTA (1280)",
+        "type": "tta",
+        "imgsz": 1280,
+        "conf": 0.05,
+        "wbf_iou": 0.55
+      }
+    },
+    {
+      "id": "spec_sahi_512",
+      "name": "Option b: SAHI slices 512 (overlap 25%)",
+      "map50": 0.504,
+      "precision": 0.5957,
+      "recall": 0.497,
+      "mean_latency_ms": 240.14,
+      "p50_latency_ms": 238.82,
+      "config_details": {
+        "id": "spec_sahi_512",
+        "name": "Option b: SAHI slices 512 (overlap 25%)",
+        "type": "sahi",
+        "slice": 512,
+        "conf": 0.05,
+        "wbf_iou": 0.55
+      }
+    },
+    {
+      "id": "fusion_spec1280_gen1024",
+      "name": "Option e: Dual-Model Fusion (Spec 1280 + Gen 1024)",
+      "map50": 0.4954,
+      "precision": 0.7048,
+      "recall": 0.4379,
+      "mean_latency_ms": 51.33,
+      "p50_latency_ms": 50.52,
+      "config_details": {
+        "id": "fusion_spec1280_gen1024",
+        "name": "Option e: Dual-Model Fusion (Spec 1280 + Gen 1024)",
+        "type": "dual",
+        "spec_imgsz": 1280,
+        "gen_imgsz": 1024,
+        "conf": 0.05,
+        "wbf_iou": 0.55
+      }
+    },
+    {
+      "id": "baseline_spec_1024",
+      "name": "Specialist (imgsz=1024, baseline)",
+      "map50": 0.4876,
+      "precision": 0.6167,
+      "recall": 0.4379,
+      "mean_latency_ms": 25.56,
+      "p50_latency_ms": 23.02,
+      "config_details": {
+        "id": "baseline_spec_1024",
+        "name": "Specialist (imgsz=1024, baseline)",
+        "type": "single",
+        "model": "spec",
+        "imgsz": 1024,
+        "conf": 0.001,
+        "wbf": false
+      }
+    },
+    {
+      "id": "spec_conf_015_wbf_060",
+      "name": "Option c: Conf=0.15, WBF IoU=0.60",
+      "map50": 0.4663,
+      "precision": 0.5278,
+      "recall": 0.5621,
+      "mean_latency_ms": 10.28,
+      "p50_latency_ms": 10.17,
+      "config_details": {
+        "id": "spec_conf_015_wbf_060",
+        "name": "Option c: Conf=0.15, WBF IoU=0.60",
+        "type": "wbf_sweep",
+        "conf": 0.15,
+        "wbf_iou": 0.6
+      }
+    },
+    {
+      "id": "combo_spec1536_gen1024_wbf",
+      "name": "Combo: Spec 1536 + Gen 1024 + WBF",
+      "map50": 0.4548,
+      "precision": 0.5385,
+      "recall": 0.497,
+      "mean_latency_ms": 60.48,
+      "p50_latency_ms": 59.73,
+      "config_details": {
+        "id": "combo_spec1536_gen1024_wbf",
+        "name": "Combo: Spec 1536 + Gen 1024 + WBF",
+        "type": "dual",
+        "spec_imgsz": 1536,
+        "gen_imgsz": 1024,
+        "conf": 0.05,
+        "wbf_iou": 0.55
+      }
+    },
+    {
+      "id": "spec_imgsz_1280",
+      "name": "Option a: Specialist at imgsz=1280",
+      "map50": 0.4077,
+      "precision": 0.4352,
+      "recall": 0.497,
+      "mean_latency_ms": 34.1,
+      "p50_latency_ms": 31.73,
+      "config_details": {
+        "id": "spec_imgsz_1280",
+        "name": "Option a: Specialist at imgsz=1280",
+        "type": "single",
+        "model": "spec",
+        "imgsz": 1280,
+        "conf": 0.001,
+        "wbf": false
+      }
+    },
+    {
+      "id": "spec_conf_020_wbf_070",
+      "name": "Option c: Conf=0.20, WBF IoU=0.70",
+      "map50": 0.4043,
+      "precision": 0.6167,
+      "recall": 0.4379,
+      "mean_latency_ms": 10.68,
+      "p50_latency_ms": 10.22,
+      "config_details": {
+        "id": "spec_conf_020_wbf_070",
+        "name": "Option c: Conf=0.20, WBF IoU=0.70",
+        "type": "wbf_sweep",
+        "conf": 0.2,
+        "wbf_iou": 0.7
+      }
+    },
+    {
+      "id": "baseline_gen_1024",
+      "name": "Generalist (imgsz=1024, baseline)",
+      "map50": 0.4029,
+      "precision": 0.646,
+      "recall": 0.432,
+      "mean_latency_ms": 47.43,
+      "p50_latency_ms": 35.55,
+      "config_details": {
+        "id": "baseline_gen_1024",
+        "name": "Generalist (imgsz=1024, baseline)",
+        "type": "single",
+        "model": "gen",
+        "imgsz": 1024,
+        "conf": 0.001,
+        "wbf": false
+      }
+    },
+    {
+      "id": "spec_imgsz_1536",
+      "name": "Option a: Specialist at imgsz=1536",
+      "map50": 0.3343,
+      "precision": 0.496,
+      "recall": 0.3669,
+      "mean_latency_ms": 38.66,
+      "p50_latency_ms": 36.51,
+      "config_details": {
+        "id": "spec_imgsz_1536",
+        "name": "Option a: Specialist at imgsz=1536",
+        "type": "single",
+        "model": "spec",
+        "imgsz": 1536,
+        "conf": 0.001,
+        "wbf": false
+      }
+    }
+  ]
+}

@@ -1,0 +1,190 @@
+{
+  "title": "Project Rakshak 2.0 \u2014 Vessel Detection Diagnosis on val_report",
+  "dataset_scope": "21 tiles / 280 vessels",
+  "total_gt_vessels": 280,
+  "total_tiles": 21,
+  "avg_vessels_per_tile": 13.33,
+  "gt_overlapping_another_gt_iou_gt_0_3": {
+    "count": 4,
+    "percentage_of_gt": 1.43,
+    "details": [
+      {
+        "tile": "1278_0_2034",
+        "count": 2,
+        "pairs": [
+          [
+            0,
+            1,
+            0.315
+          ]
+        ]
+      },
+      {
+        "tile": "1278_768_2034",
+        "count": 2,
+        "pairs": [
+          [
+            0,
+            1,
+            0.315
+          ]
+        ]
+      }
+    ]
+  },
+  "gt_bucket_distribution": {
+    "<8": 0,
+    "8-12": 4,
+    "12-20": 74,
+    "20-40": 120,
+    ">40": 82
+  },
+  "yolo11m_generalist_conf_0_25": {
+    "<8": {
+      "gt_count": 0,
+      "matched_count": 0,
+      "recall": 0.0,
+      "mean_iou_all_gt": 0.0,
+      "mean_iou_matched": 0.0
+    },
+    "8-12": {
+      "gt_count": 4,
+      "matched_count": 0,
+      "recall": 0.0,
+      "mean_iou_all_gt": 0.0,
+      "mean_iou_matched": 0.0
+    },
+    "12-20": {
+      "gt_count": 74,
+      "matched_count": 2,
+      "recall": 0.027,
+      "mean_iou_all_gt": 0.0357,
+      "mean_iou_matched": 0.7064
+    },
+    "20-40": {
+      "gt_count": 120,
+      "matched_count": 28,
+      "recall": 0.2333,
+      "mean_iou_all_gt": 0.214,
+      "mean_iou_matched": 0.6146
+    },
+    ">40": {
+      "gt_count": 82,
+      "matched_count": 15,
+      "recall": 0.1829,
+      "mean_iou_all_gt": 0.2413,
+      "mean_iou_matched": 0.6553
+    }
+  },
+  "yolo11n_specialist_conf_0_25": {
+    "<8": {
+      "gt_count": 0,
+      "matched_count": 0,
+      "recall": 0.0,
+      "mean_iou_all_gt": 0.0,
+      "mean_iou_matched": 0.0
+    },
+    "8-12": {
+      "gt_count": 4,
+      "matched_count": 0,
+      "recall": 0.0,
+      "mean_iou_all_gt": 0.0,
+      "mean_iou_matched": 0.0
+    },
+    "12-20": {
+      "gt_count": 74,
+      "matched_count": 0,
+      "recall": 0.0,
+      "mean_iou_all_gt": 0.0064,
+      "mean_iou_matched": 0.0
+    },
+    "20-40": {
+      "gt_count": 120,
+      "matched_count": 22,
+      "recall": 0.1833,
+      "mean_iou_all_gt": 0.1615,
+      "mean_iou_matched": 0.6591
+    },
+    ">40": {
+      "gt_count": 82,
+      "matched_count": 32,
+      "recall": 0.3902,
+      "mean_iou_all_gt": 0.3066,
+      "mean_iou_matched": 0.7077
+    }
+  },
+  "yolo11m_generalist_conf_0_05": {
+    "<8": {
+      "gt_count": 0,
+      "matched_count": 0,
+      "recall": 0.0,
+      "mean_iou_all_gt": 0.0,
+      "mean_iou_matched": 0.0
+    },
+    "8-12": {
+      "gt_count": 4,
+      "matched_count": 0,
+      "recall": 0.0,
+      "mean_iou_all_gt": 0.1422,
+      "mean_iou_matched": 0.0
+    },
+    "12-20": {
+      "gt_count": 74,
+      "matched_count": 7,
+      "recall": 0.0946,
+      "mean_iou_all_gt": 0.1445,
+      "mean_iou_matched": 0.6025
+    },
+    "20-40": {
+      "gt_count": 120,
+      "matched_count": 36,
+      "recall": 0.3,
+      "mean_iou_all_gt": 0.327,
+      "mean_iou_matched": 0.6233
+    },
+    ">40": {
+      "gt_count": 82,
+      "matched_count": 31,
+      "recall": 0.378,
+      "mean_iou_all_gt": 0.3985,
+      "mean_iou_matched": 0.6485
+    }
+  },
+  "yolo11n_specialist_conf_0_05": {
+    "<8": {
+      "gt_count": 0,
+      "matched_count": 0,
+      "recall": 0.0,
+      "mean_iou_all_gt": 0.0,
+      "mean_iou_matched": 0.0
+    },
+    "8-12": {
+      "gt_count": 4,
+      "matched_count": 2,
+      "recall": 0.5,
+      "mean_iou_all_gt": 0.3127,
+      "mean_iou_matched": 0.6253
+    },
+    "12-20": {
+      "gt_count": 74,
+      "matched_count": 3,
+      "recall": 0.0405,
+      "mean_iou_all_gt": 0.0618,
+      "mean_iou_matched": 0.6853
+    },
+    "20-40": {
+      "gt_count": 120,
+      "matched_count": 37,
+      "recall": 0.3083,
+      "mean_iou_all_gt": 0.2521,
+      "mean_iou_matched": 0.6713
+    },
+    ">40": {
+      "gt_count": 82,
+      "matched_count": 45,
+      "recall": 0.5488,
+      "mean_iou_all_gt": 0.4638,
+      "mean_iou_matched": 0.7594
+    }
+  }
+}
