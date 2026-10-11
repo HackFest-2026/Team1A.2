@@ -53,6 +53,37 @@
 | **Vessel mAP@50 (ONNX CPU)** | **12.49%** (0.1249) | 280 GT targets | `val_report` holdout | ONNX Runtime CPU baseline | 2026-10-10 | `evaluation/results/format_accuracy_540_report.json` | `MEASURED` |
 | **ONNX Runtime CUDA GPU Accuracy** | **NOT DONE** | 0 tiles | CUDA 13/12 mismatch under air-gap | ONNX Runtime CUDA Provider | 2026-10-10 | `evaluation/results/edge_bench_report.json` | `NOT DONE` |
 
+### Vessel Split Leakage Check (Zero Contamination Audit)
+
+**Source JSON:** [`evaluation/results/split_overlap_audit.json`](file:///c:/Users/awhri/OneDrive/Desktop/DEF/evaluation/results/split_overlap_audit.json)  
+**Audit Scope:** 276 scenes (YOLO11n vessel specialist train), 301 scenes (YOLO11m generalist train), 37 scenes (`val_tune` calibration split), 38 scenes (`val_report` official holdout evaluation split).
+
+| Split Pair | Scene Count A | Scene Count B | Overlap Count | Overlapping Scene IDs | Verdict | Source JSON Path |
+| :--- | :---: | :---: | :---: | :--- | :--- | :--- |
+| **Vessel Specialist Train vs val_tune** | 276 | 37 | **0** | `[]` (Disjoint) | **ZERO_LEAKAGE** | `evaluation/results/split_overlap_audit.json` |
+| **Vessel Specialist Train vs val_report** | 276 | 38 | **0** | `[]` (Disjoint) | **ZERO_LEAKAGE** | `evaluation/results/split_overlap_audit.json` |
+| **Generalist Train vs val_tune** | 301 | 37 | **0** | `[]` (Disjoint) | **ZERO_LEAKAGE** | `evaluation/results/split_overlap_audit.json` |
+| **Generalist Train vs val_report** | 301 | 38 | **0** | `[]` (Disjoint) | **ZERO_LEAKAGE** | `evaluation/results/split_overlap_audit.json` |
+| **val_tune vs val_report** | 37 | 38 | **0** | `[]` (Disjoint) | **ZERO_LEAKAGE** | `evaluation/results/split_overlap_audit.json` |
+| **Vessel Specialist Train vs Generalist Train** | 276 | 301 | **276** | Subset (276 scenes) | **VERIFIED_SUBSET** | `evaluation/results/split_overlap_audit.json` |
+
+> [!NOTE]
+> **Audit Confirmation:** Split overlap audit confirmed strictly zero data leakage across all training and evaluation splits (`zero_leakage_verified: true`). No training scenes appear in `val_tune` or `val_report`. If any training scene appeared in `val_tune`, the calibration numbers in `vessel_tuning_val_tune.json` would be marked as "CONTAMINATED, not used for claims"; however, the audit proves zero contamination.
+
+### Why Three Vessel Numbers (Reconciliation Table)
+
+The generalist vessel mAP@50 appears in three separate evaluation reports. The table below reconciles why they differ in metric implementation, confidence threshold, tile set, and precision mode:
+
+| Vessel Metric Value | Evaluated Scope | Tile Count & Targets | Conf Threshold | Precision Mode | Metric Implementation & Tool | Source JSON Report | Status & Role |
+| :---: | :--- | :--- | :---: | :---: | :--- | :--- | :--- |
+| **12.75%** (0.1275) | Full validation holdout | 540 tiles (66,521 total GT, 280 vessels) | `conf=0.001` | PyTorch FP16 (`.half()`) | Ultralytics built-in `box.class_result(0)` (COCO 101-point AP across full 540 tiles) | `evaluation/results/format_accuracy_540_report.json` | **HEADLINE VALUE (Generalist)** |
+| **12.07%** (0.1207) | Maritime holdout subset | 21 tiles (5 scenes, 280 vessels) | `conf=0.001` | PyTorch FP32 (`half=False`) | Ultralytics built-in `m_prim.val()` from `scratch/test_vessel_eval.py` on 21 vessel tiles | `evaluation/results/edge_bench_report.json` | **Comparative Baseline** |
+| **12.26%** (0.1226) | Maritime holdout subset | 21 tiles (5 scenes, 280 vessels) | `conf=0.001` | PyTorch FP32 default | Standalone Python `compute_metrics` in `eval_vessel_boost.py` (with 1,000-resample Bootstrap 95% CI: `[5.18%, 21.57%]`) | `evaluation/results/vessel_boost_report.json` | **TTA/WBF Boost Study Baseline** |
+| **16.24%** (0.1624) | Maritime holdout subset | 21 tiles (5 scenes, 280 vessels) | `conf=0.001` | PyTorch FP32 (YOLO11n specialist) | Ultralytics built-in `m_spec.val()` from `scratch/test_vessel_eval.py` on 21 vessel tiles | `evaluation/results/edge_bench_report.json` | **HEADLINE VALUE (Specialist)** |
+
+> [!IMPORTANT]
+> **Headline Retention:** **12.75%** (YOLO11m Generalist on full 540 tiles) and **16.24%** (YOLO11n Specialist on 21 maritime tiles) are retained as the authoritative headline values and remain unchanged.
+
 ---
 
 ## 2. Dark-Vessel Detection Rate
@@ -246,10 +277,15 @@
 | **Workload Reduction @ 120s (Baseline A: Raw Detections)** | **86.54%** (Baseline A: 147.45h $\rightarrow$ Rakshak: 19.85h; Saved: 127.60h/hr) | Assumed 120s review per item | 12 scenes/hr pacing (4,423.6 raw det/hr vs 595.6 items/hr) | Baseline A: 14,008 raw detections review | 2026-10-09 | `evaluation/results/analyst_workload_report.json` | `COMPUTED` |
 | **Workload Reduction @ 240s (Baseline A: Raw Detections)** | **86.54%** (Baseline A: 294.91h $\rightarrow$ Rakshak: 39.71h; Saved: 255.20h/hr) | Assumed 240s review per item | 12 scenes/hr pacing (4,423.6 raw det/hr vs 595.6 items/hr) | Baseline A: 14,008 raw detections review | 2026-10-09 | `evaluation/results/analyst_workload_report.json` | `COMPUTED` |
 | **Workload Reduction @ 45s (Baseline B: Fixed 40 min/scene)** | **6.9%** (Saved: 0.55 hrs / surv. hr) | Assumed 45s review per item | Model @ 12 scenes/hr, 40 min baseline (8.0h cap) | Baseline B: Fixed time budget (7.45h needed vs 8.0h cap) | 2026-10-09 | `evaluation/results/analyst_workload_report.json` | `ASSUMED` |
-| **Workload Reduction @ 60s (Baseline B: Fixed 40 min/scene)** | **-24.1%** (Over capacity: -1.93 hrs / surv. hr) | Assumed 60s review per item | Model @ 12 scenes/hr, 40 min baseline (8.0h cap) | Baseline B: Fixed time budget (9.93h needed vs 8.0h cap) | 2026-10-09 | `evaluation/results/analyst_workload_report.json` | `ASSUMED` |
-| **Workload Reduction @ 120s (Baseline B: Fixed 40 min/scene)** | **-148.1%** (Over capacity: -11.85 hrs / surv. hr) | Assumed 120s review per item | Model @ 12 scenes/hr, 40 min baseline (8.0h cap) | Baseline B: Fixed time budget (19.85h needed vs 8.0h cap) | 2026-10-09 | `evaluation/results/analyst_workload_report.json` | `ASSUMED` |
-| **Workload Reduction @ 240s (Baseline B: Fixed 40 min/scene)** | **-396.4%** (Over capacity: -31.71 hrs / surv. hr) | Assumed 240s review per item | Model @ 12 scenes/hr, 40 min baseline (8.0h cap) | Baseline B: Fixed time budget (39.71h needed vs 8.0h cap) | 2026-10-09 | `evaluation/results/analyst_workload_report.json` | `ASSUMED` |
+| **Workload Reduction @ 60s (Baseline B: Fixed 40 min/scene)** | **-24.1%** (Over capacity: -1.93 hrs / surv. hr) | Assumed 60s review per item | Model @ 12 scenes/hr, 40 min baseline (8.0h cap) | Baseline B: Negative because 595.6 items/hr * 60s = 9.93h exceeds 8.0h cap | 2026-10-09 | `evaluation/results/analyst_workload_report.json` | `ASSUMED` |
+| **Workload Reduction @ 120s (Baseline B: Fixed 40 min/scene)** | **-148.1%** (Over capacity: -11.85 hrs / surv. hr) | Assumed 120s review per item | Model @ 12 scenes/hr, 40 min baseline (8.0h cap) | Baseline B: Negative because 595.6 items/hr * 120s = 19.85h exceeds 8.0h cap | 2026-10-09 | `evaluation/results/analyst_workload_report.json` | `ASSUMED` |
+| **Workload Reduction @ 240s (Baseline B: Fixed 40 min/scene)** | **-396.4%** (Over capacity: -31.71 hrs / surv. hr) | Assumed 240s review per item | Model @ 12 scenes/hr, 40 min baseline (8.0h cap) | Baseline B: Negative because 595.6 items/hr * 240s = 39.71h exceeds 8.0h cap | 2026-10-09 | `evaluation/results/analyst_workload_report.json` | `ASSUMED` |
 | **Operational Human-in-the-Loop Trial** | **NOT DONE** | 0 human analysts | Live military operations room | Timed user study with defense analysts | 2026-10-10 | `evaluation/results/analyst_workload_report.json` | `NOT DONE` |
+
+> [!NOTE]
+> **KPI Distinction & Explanation of Negative Baseline B Rows:**
+> - **KPI 8 (Analyst Workload Reduction):** Evaluates how much cognitive review load is removed from the surveillance operator. Under Baseline A (manual review of all 14,008 raw detections), Rakshak delivers a **measured 86.54% reduction** (down to 1,886 prioritized items). Under Baseline B, an arbitrary fixed ceiling of 40.0 min/scene (8.0 hours cap per surveillance hour at 12 scenes/hr) is assumed. The rows for 60s (-24.1%), 120s (-148.1%), and 240s (-396.4%) are negative because reviewing 595.58 items/hour at $\ge 60$s takes 9.93h, 19.85h, or 39.71h of work per hour, exceeding a single analyst's 8.0h fixed time budget (operational deficit: -1.93h, -11.85h, -31.71h).
+> - **KPI 9 (Mission-Planning Cycle Time):** Completely distinct from analyst screening workload; measures emergency C2 OODA-loop cycle time (STANAG 2014 SITREP compilation, sovereign RoE doctrine lookup, and waypoint mission dispatch) answering how rapidly commanders can plan and disseminate response orders.
 
 ---
 
@@ -269,19 +305,19 @@ Each scenario was evaluated over 10 repetitions (30 total runs) against local li
 | **Scenario A: Rakshak Measured (REST)** | **0.2572 ± 0.1351 s** (Min: 0.1059s, Max: 0.4134s) | 10 repetitions | Scenario A: Dark Vessel (Mumbai ODA) | Local loopback REST timing (`time.perf_counter`) | 2026-10-10 | `evaluation/results/mission_planning_report.json` | `MEASURED` |
 | **Scenario A: Operator-Paced Estimate** | **50.26 s** | 10 runs + model | Scenario A: Dark Vessel (Mumbai ODA) | Machine time + 50.0s assumed think-time | 2026-10-10 | `evaluation/results/mission_planning_report.json` | `ASSUMED` |
 | **Scenario A: Manual Baseline** | **1680.0 s** (28.0 min) | Operations room staff model | Scenario A: Dark Vessel (Mumbai ODA) | 5-step manual ops room procedure model | 2026-10-10 | `evaluation/assumptions.yaml` | `ASSUMED` |
-| **Scenario A: Cycle Time Reduction** | **97.01%** (Operator-Paced) / **99.98%** (Scripted REST) | 10 runs vs baseline | Scenario A: Dark Vessel (Mumbai ODA) | Computed reduction from assumed baseline | 2026-10-10 | `evaluation/results/mission_planning_report.json` | `COMPUTED` |
+| **Scenario A: Cycle Time Reduction** | **97.01%** (Operator-Paced) / **99.98%** (Scripted REST) | 10 runs vs baseline | Scenario A: Dark Vessel (Mumbai ODA) | Computed reduction from assumed baseline | 2026-10-10 | `evaluation/results/mission_planning_report.json` | `COMPUTED (system steps MEASURED, manual baseline ASSUMED)` |
 | **Scenario B: Rakshak Measured (REST)** | **0.1397 ± 0.0173 s** (Min: 0.1167s, Max: 0.1751s) | 10 repetitions | Scenario B: Army Convoy (Sector Alpha) | Local loopback REST timing (`time.perf_counter`) | 2026-10-10 | `evaluation/results/mission_planning_report.json` | `MEASURED` |
 | **Scenario B: Operator-Paced Estimate** | **50.14 s** | 10 runs + model | Scenario B: Army Convoy (Sector Alpha) | Machine time + 50.0s assumed think-time | 2026-10-10 | `evaluation/results/mission_planning_report.json` | `ASSUMED` |
 | **Scenario B: Manual Baseline** | **1320.0 s** (22.0 min) | Operations room staff model | Scenario B: Army Convoy (Sector Alpha) | 5-step manual ops room procedure model | 2026-10-10 | `evaluation/assumptions.yaml` | `ASSUMED` |
-| **Scenario B: Cycle Time Reduction** | **96.20%** (Operator-Paced) / **99.99%** (Scripted REST) | 10 runs vs baseline | Scenario B: Army Convoy (Sector Alpha) | Computed reduction from assumed baseline | 2026-10-10 | `evaluation/results/mission_planning_report.json` | `COMPUTED` |
+| **Scenario B: Cycle Time Reduction** | **96.20%** (Operator-Paced) / **99.99%** (Scripted REST) | 10 runs vs baseline | Scenario B: Army Convoy (Sector Alpha) | Computed reduction from assumed baseline | 2026-10-10 | `evaluation/results/mission_planning_report.json` | `COMPUTED (system steps MEASURED, manual baseline ASSUMED)` |
 | **Scenario C: Rakshak Measured (REST)** | **0.1560 ± 0.0217 s** (Min: 0.1105s, Max: 0.1837s) | 10 repetitions | Scenario C: UGS Alarm + Drone (Cross-Domain) | Local loopback REST timing (`time.perf_counter`) | 2026-10-10 | `evaluation/results/mission_planning_report.json` | `MEASURED` |
 | **Scenario C: Operator-Paced Estimate** | **50.16 s** | 10 runs + model | Scenario C: UGS Alarm + Drone (Cross-Domain) | Machine time + 50.0s assumed think-time | 2026-10-10 | `evaluation/results/mission_planning_report.json` | `ASSUMED` |
 | **Scenario C: Manual Baseline** | **1320.0 s** (22.0 min) | Operations room staff model | Scenario C: UGS Alarm + Drone (Cross-Domain) | 5-step manual ops room procedure model | 2026-10-10 | `evaluation/assumptions.yaml` | `ASSUMED` |
-| **Scenario C: Cycle Time Reduction** | **96.20%** (Operator-Paced) / **99.99%** (Scripted REST) | 10 runs vs baseline | Scenario C: UGS Alarm + Drone (Cross-Domain) | Computed reduction from assumed baseline | 2026-10-10 | `evaluation/results/mission_planning_report.json` | `COMPUTED` |
+| **Scenario C: Cycle Time Reduction** | **96.20%** (Operator-Paced) / **99.99%** (Scripted REST) | 10 runs vs baseline | Scenario C: UGS Alarm + Drone (Cross-Domain) | Computed reduction from assumed baseline | 2026-10-10 | `evaluation/results/mission_planning_report.json` | `COMPUTED (system steps MEASURED, manual baseline ASSUMED)` |
 | **Cross-Scenario Average Machine Time** | **0.1843 s** | 30 runs total | 3 reproducible tactical scenarios | Mean across all 3 scenarios | 2026-10-10 | `evaluation/results/mission_planning_report.json` | `MEASURED` |
 | **Cross-Scenario Average Operator-Paced** | **50.19 s** | 30 runs + model | 3 reproducible tactical scenarios | Mean across all 3 scenarios | 2026-10-10 | `evaluation/results/mission_planning_report.json` | `ASSUMED` |
 | **Cross-Scenario Average Manual Baseline** | **1440.0 s** (24.0 min) | Operations room staff model | 3 reproducible tactical scenarios | Mean across all 3 scenarios | 2026-10-10 | `evaluation/assumptions.yaml` | `ASSUMED` |
-| **Cross-Scenario Average Reduction** | **96.51%** | 30 runs vs baseline | 3 reproducible tactical scenarios | Mean across all 3 scenarios | 2026-10-10 | `evaluation/results/mission_planning_report.json` | `COMPUTED` |
+| **Cross-Scenario Average Reduction** | **96.51%** (or **96.5%**) | 30 runs vs baseline | 3 reproducible tactical scenarios | Mean across all 3 scenarios | 2026-10-10 | `evaluation/results/mission_planning_report.json` | `COMPUTED (system steps MEASURED, manual baseline ASSUMED)` |
 | **STANAG 2014 SITREP Compilation Latency** | **< 50 ms** (16.74 ms in Scen A) | 10 operational calls | Active situational entities | Procedural Python text compiler | 2026-10-10 | `evaluation/results/mission_planning_report.json` | `MEASURED` |
 | **Sovereign RoE Doctrine RAG Retrieval** | **< 40 ms** (39.09 ms in Scen B) | 10 operational calls | Rules of Engagement query (INBR 8 / UNCLOS) | Local BM25 lexical index (0 cloud calls) | 2026-10-10 | `evaluation/results/mission_planning_report.json` | `MEASURED` |
 | **End-to-End Human Military Staff Exercise** | **NOT DONE** | 0 operational military staff | Live brigade/fleet command staff exercise | Comparative military staff exercise | 2026-10-10 | `evaluation/results/analyst_workload_report.json` | `NOT DONE` |
@@ -371,6 +407,56 @@ Each scenario was evaluated over 10 repetitions (30 total runs) against local li
 | **(b) Inpainting boundary artifacts** | **35** | **20.59%** | Telea inpainting on natural structured terrain leaves high-frequency texture steps that trigger false detections | Pruned by confidence elevation ($\ge 0.40$) |
 | **(c) Mis-registration / texture noise** | **7** | **4.12%** | Residual sub-pixel displacement noise and unassociated background clutter | Controlled by ORB+RANSAC sub-pixel co-registration |
 | **Total Baseline False Positives** | **170** | **100.00%** | Combined false alarms before stability filtration | Reduced to **4 FPs** (97.6% reduction) under stability filter |
+
+---
+
+## 11. Safety Suite and Unit Test Grounding
+
+### Actual Automated Test Counts & Counting Commands
+Project Rakshak 2.0 maintains a dual validation layer (automated unit tests + platform smoke tests + deterministic adversarial safety scenarios):
+
+1. **Unit Test Suite (Pytest):**
+   - **Count:** **38 passed unit tests** across 4 test modules.
+   - **Counting Command:**
+     ```bash
+     pytest --collect-only -q
+     # Output: 38 tests collected (test_change_detection: 9, test_ddil_sync: 11, test_track_fusion: 13, test_triage_workload: 5)
+     pytest
+     # Output: 38 passed in ~9.7s
+     ```
+
+2. **End-to-End Integration Smoke Tests:**
+   - **Count:** **12 passed smoke tests** covering all 12 core subsystems.
+   - **Counting Command:**
+     ```bash
+     python smoke_test_platform.py
+     # Output: SMOKE TEST SUMMARY: 12 PASSED / 0 FAILED (TOTAL 12)
+     ```
+
+3. **Safety Suite v2 (Triage Adversarial & Edge Cases):**
+   - **Count:** **15 evaluated tactical scenarios** in `evaluation/results/analyst_workload_report.json` and `tests/test_triage_workload.py`:
+     - **9 Critical Threats:** AIS position spoofing, MMSI transponder spoofing, high-speed military dash (>28 kts), unauthorized naval EEZ penetration, dark approach to critical infrastructure, uncoordinated formation clustering, deceptive transponder manipulation, border ingress convoy, and low-observable coastal intercept. **Result:** 9/9 escalated to Priority Queue (**0.0% missed threat rate**).
+     - **4 Cooperative Controls:** Benign container ships, registered fishing trawlers, transponder-matched merchant vessels, and harbor tugs. **Result:** 4/4 auto-closed benign (**0.0% false escalation rate**).
+     - **2 Ambiguous Boundary Cases:** Boundary proximity offsets (1,400m and 650m). **Result:** 2/2 safely routed to Human Review Queue (**100.0% safe boundary routing**).
+   - **Counting Command:**
+     ```bash
+     python -c "import json; r=json.load(open('evaluation/results/analyst_workload_report.json')); print(r['safety_suite_v2']['total_scenarios_tested'])"
+     # Output: 15
+     ```
+
+### Discrepancy Reconciliation (80/50 vs 6/4)
+- **The "80 vs 50" Discrepancy:** Early synthetic promotional documentation referenced "80 scenarios" or claimed an "80.62% auto-close rate across 50 synthetic scenes". This figure was an ungrounded synthetic artifact. It has been permanently deprecated and replaced by the strictly empirical **20.72% real auto-close rate** measured across ALL 2,379 entities on pure held-out `val_report` optical scenes (where 100% of auto-closed entities are isolated civilian vehicles, and 0% of infrastructure, vessels, or aircraft are auto-closed).
+- **The "6 vs 4" Discrepancy:** An early preliminary version of the Safety Suite tested only 10 test scenarios (6 critical threats and 4 benign controls). Safety Suite v2 expanded this suite to 15 scenarios by adding 3 additional adversarial threats and 2 ambiguous boundary cases (9 critical threats, 4 benign controls, 2 boundary cases).
+
+---
+
+## 12. Known Inconsistencies and Their Causes
+
+| Domain / Metric | Value A | Value B | Producing Script(s) & Filter Mechanism | Root Cause & Resolution |
+| :--- | :---: | :---: | :--- | :--- |
+| **Total Consolidated Entities** | **2,379** | **2,378** | `evaluation/analyst_workload_eval.py` (`load_val_report_detections`) vs early per-scene scaling | **2,379 is canonical.** Sum of per-class entities across 38 held-out scenes is Vehicle (1,151) + Infrastructure (984) + Vessel (186) + Aircraft (58) = 2,379 entities. The historical "2,378" figure resulted from integer truncation `sum(int(s_raw * (2379.0 / 14008.0)))` across individual scenes, dropping 1 fractional entity due to `int()` floor rounding. |
+| **Filtered Duplicate Packets** | **13** | **24** | `evaluation/ddil_sim.py` (`cmd_inbox.get_duplicates_by_phase`) vs dual-outage retransmission counts | **13 is canonical for single-pass.** In the primary 30-min tactical EW benchmark (`ddil_report.json`), exactly 13 duplicates were rejected by the Command Inbox (12 during Phase 3 Link Recovery degraded mesh + 1 during Phase 4 Tactical Flapping). The "24" figure was produced in bidirectional multi-node stress tests where 12 duplicates were logged across Outage 1 and 12 across Outage 2 under un-aged burst retry (12 + 12 = 24). |
+| **Tactical Compression Factor** | **1.72x** | **5.89x** (also **7.43x**) | `analyst_workload_eval.py` FP clustering vs total entity clustering vs human review items | **Different filters applied:**<br>• **1.72x** ($1,599 \rightarrow 932$): False-positive spatial clustering ratio (only false alarms).<br>• **5.89x** ($14,008 \rightarrow 2,379$): Overall spatial entity clustering ratio (merging 320 px sliding-window tiling overlap duplicates across all classes).<br>• **7.43x** ($14,008 \rightarrow 1,886$): Review items compression ratio after both spatial clustering and 493 isolated vehicle auto-closures (86.54% review reduction). |
 
 ---
 

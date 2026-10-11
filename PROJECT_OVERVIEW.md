@@ -30,7 +30,24 @@ Project Rakshak 2.0 is a sovereign, 100% air-gapped Common Operating Picture (CO
 
 ## 2. Evaluation Results by Problem Statement KPI
 
-The following 11 sections present the definitive, audited evaluation benchmarks corresponding to each evaluation dimension of Problem Statement 1A, plus the zero-egress security verification. Every single number and table below is copied directly from [evaluation/RESULTS.md](file:///c:/Users/awhri/OneDrive/Desktop/DEF/evaluation/RESULTS.md) with an explicit provenance tag.
+The following sections present the definitive, audited evaluation benchmarks corresponding to each evaluation dimension of Problem Statement 1A, plus the zero-egress security verification. Every single number and table below is copied directly from [evaluation/RESULTS.md](file:///c:/Users/awhri/OneDrive/Desktop/DEF/evaluation/RESULTS.md) with an explicit provenance tag.
+
+### 🛡️ Operational Honesty Disclosure: What Is Measured vs Simulated vs Assumed
+
+The table below provides a top-of-document audit across all 10 Problem Statement evaluation dimensions, classifying each figure as `MEASURED` on host hardware/local data, `SIMULATED` via mathematical Monte Carlo models, or `ASSUMED` from operational staff models:
+
+| # | Problem Statement KPI | Classification | Grounded Value / Evidence | Evaluation Scope / Methodology | Source File / Report |
+| :-: | :--- | :---: | :--- | :--- | :--- |
+| **1** | **Per-Class Precision, Recall & mAP** | `MEASURED` | Overall mAP@50: **48.46%** (FP16), Aircraft: **89.85%**, Vehicle: **46.83%**, Infra: **44.41%**, Vessel: **12.75%** (Headline Generalist) / **16.24%** (Specialist) | 540 holdout tiles (66,521 targets) on `val_report`; 21 tiles (280 vessels) on Maritime holdout | [`format_accuracy_540_report.json`](file:///c:/Users/awhri/OneDrive/Desktop/DEF/evaluation/results/format_accuracy_540_report.json) |
+| **2** | **Dark-Vessel Detection Rate** | `SIMULATED` | E2E Dark Capture: **79.40 ± 2.80%**, Post-Det Recall: **92.63 ± 2.23%**, Precision: **100.0%** (Real Sentinel-2 AIS corpus dark fraction: **45.26%** `MEASURED`) | 20 Monte Carlo seeds (10,000 synthetic contacts, 3,000 dark) in Arabian Sea littoral | [`dark_vessel_eval_report.json`](file:///c:/Users/awhri/OneDrive/Desktop/DEF/evaluation/results/dark_vessel_eval_report.json) |
+| **3** | **Sensor-to-Alert Latency** | `MEASURED` | Neural tile inference: **17.85 ± 0.11 ms** (boosted, 55.6 FPS), **35.74 ms** (unboosted, P50: **34.54 ms**); Radar CFAR: ~1.1s; SITREP: <50 ms; RoE RAG: <40 ms | 1,000 iterations on host RTX 4060 GPU; 30 mission-planning runs | [`edge_bench_report.json`](file:///c:/Users/awhri/OneDrive/Desktop/DEF/evaluation/results/edge_bench_report.json) |
+| **4** | **False Alarms per Hour / km²** | `MEASURED` | **49.78 FP/km²** (uncalibrated) $\rightarrow$ **9.93 FP/km²** (precision mode); **7.26 HIGH alerts/hr** at 12 scenes/hr pacing (24h continuous field FAR `NOT DONE`) | 38 held-out scenes (32.12 km², 14,008 raw detections) on `val_report` | [`false_alarm_report.json`](file:///c:/Users/awhri/OneDrive/Desktop/DEF/evaluation/results/false_alarm_report.json) |
+| **5** | **Track Continuity & ID-Switch Rate** | `SIMULATED` | **0 ID switches** in control, crossing & sensor dropout (MOTA **92.16%–96.08%**); **2 ID switches** in high-density chokepoint (MOTA **71.22%**) | 50 Monte Carlo seeds with kinematic CV Kalman Filter + JPDA | [`tracking_report.json`](file:///c:/Users/awhri/OneDrive/Desktop/DEF/evaluation/results/tracking_report.json) |
+| **6** | **Geolocation CEP (Localisation Error)** | `MEASURED` | **CEP50: 0.70 m**, **CEP90: 2.43 m** at IoU $\ge 0.3$; **CEP50: 0.67 m**, **CEP90: 1.99 m** at IoU $\ge 0.5$ (Surveyor field GPS benchmark `NOT DONE`) | 540 holdout tiles (37,300 matched detections vs GeoTIFF metadata) | [`geolocation_cep_report.json`](file:///c:/Users/awhri/OneDrive/Desktop/DEF/evaluation/results/geolocation_cep_report.json) |
+| **7** | **Edge Throughput, Model Size & Power** | `PARTIAL` (Host `MEASURED` / Jetson `PROJECTED`) | Model: **38.7 MB** (20.1M params); Host RTX 4060: **55.6 FPS**, **43.07 ± 0.20 W** gross board power; Jetson AGX Orin: **[10.8 – 23.8 ms]**, **[42.0 – 92.6 FPS]**; Jetson Orin Nano: **[32.8 – 98.8 ms]**, **[10.1 – 30.5 FPS]** (unmeasured, rough estimate only) | Host PyTorch GPU benchmark (`nvidia-smi`); Jetson roofline model | [`edge_bench_report.json`](file:///c:/Users/awhri/OneDrive/Desktop/DEF/evaluation/results/edge_bench_report.json) |
+| **8** | **Analyst Workload Reduction & Triage** | `PARTIAL` (Items `MEASURED` / Times `ASSUMED`) | Item reduction: **83.02%** ($14,008 \rightarrow 2,379$ entities); Auto-close: **20.72%** (493 isolated civilian vehicles); Review queue: **1,886 items** (**86.54%** reduction under Baseline A); Review times (45s–240s) & 40 min cap `ASSUMED`; Live military user study `NOT DONE` | 38 held-out scenes (`val_report`); 15 Safety Suite v2 scenarios | [`analyst_workload_report.json`](file:///c:/Users/awhri/OneDrive/Desktop/DEF/evaluation/results/analyst_workload_report.json) |
+| **9** | **Mission-Planning Cycle Time & C2** | `PARTIAL` (Steps `MEASURED` / Baseline `ASSUMED`) | Cycle reduction: **96.51%** (Automated steps: **0.1843 s** machine execution, **50.19 s** operator-paced vs **1,440.0 s / 24.0 min** `ASSUMED` manual staff baseline; Live brigade exercise `NOT DONE`) | 3 reproducible tactical scenarios (30 benchmark runs) | [`mission_planning_report.json`](file:///c:/Users/awhri/OneDrive/Desktop/DEF/evaluation/results/mission_planning_report.json) |
+| **10** | **Availability Under DDIL Conditions** | `SIMULATED` | Edge uptime: **100.0%**; Delivery: **100.0%** (720/720 alerts); Lost alerts: **0**; Duplicate packets handled: **13**; Resync: Outage 1 **40.89 ± 6.83 s**, Outage 2 **10.06 ± 0.00 s** (Physical combat net radio field trials `NOT DONE`) | 30-minute tactical EW scenario across 20 Monte Carlo seeds | [`ddil_report.json`](file:///c:/Users/awhri/OneDrive/Desktop/DEF/evaluation/results/ddil_report.json) |
 
 ---
 
@@ -432,3 +449,24 @@ To maintain absolute scientific and defense engineering integrity, the following
    The underlying public xView dataset contains incomplete labeling on minor auxiliary roads, unannotated civilian vehicles, and small coastal craft. In full-scene evaluations, genuine physical objects detected by the model are mathematically penalized as false positives due to missing annotations in ground-truth GeoTIFFs.
 7. **Absence of Independent GPS Survey:**
    Detection localisation error (CEP50 = 0.70 m, CEP90 = 2.43 m) is measured strictly against the dataset's own GeoTIFF affine transform metadata, not independent differential GPS ground surveys.
+
+---
+
+## 5. Automated Safety Suite, Unit Tests & Known Inconsistencies
+
+### Automated Test Suite Counts & Verification Commands
+- **Unit Test Suite (Pytest):** **38 passed unit tests** across 4 modules (`pytest --collect-only -q` or `pytest`).
+- **Platform Smoke Tests:** **12 passed smoke tests** covering all subsystems (`python smoke_test_platform.py`).
+- **Safety Suite v2 (Triage Rules & Edge Cases):** **15 evaluated tactical scenarios** (`evaluation/results/analyst_workload_report.json`), comprising 9 critical threats (0.0% missed threat rate), 4 cooperative controls (0.0% false escalation rate), and 2 boundary review cases (100.0% safely routed).
+- **80/50 vs 6/4 Discrepancy Resolution:**
+  - The historical "80 / 50" claim in early pitch material referred to synthetic demo scenes. It has been formally deprecated and replaced by the real measured 20.72% auto-close rate on pure held-out `val_report` optical imagery.
+  - The "6 / 4" claim was an early 10-scenario prototype of the safety suite (6 threats, 4 controls). Safety Suite v2 expanded this to 15 scenarios (9 threats, 4 controls, 2 boundary cases).
+
+### Known Inconsistencies and Their Causes
+
+| Domain / Metric | Value A | Value B | Producing Script(s) & Filter Mechanism | Root Cause & Reconciliation |
+| :--- | :---: | :---: | :--- | :--- |
+| **Total Consolidated Entities** | **2,379** | **2,378** | `evaluation/analyst_workload_eval.py` (`load_val_report_detections`) vs early per-scene scaling | **2,379 is canonical.** Sum of per-class entities across 38 held-out scenes is Vehicle (1,151) + Infrastructure (984) + Vessel (186) + Aircraft (58) = 2,379 entities. The historical "2,378" figure resulted from integer truncation `sum(int(s_raw * (2379.0 / 14008.0)))` across individual scenes, dropping 1 fractional entity due to `int()` floor rounding. |
+| **Filtered Duplicate Packets** | **13** | **24** | `evaluation/ddil_sim.py` (`cmd_inbox.get_duplicates_by_phase`) vs dual-outage retransmission counts | **13 is canonical for single-pass.** In the primary 30-min tactical EW benchmark (`ddil_report.json`), exactly 13 duplicates were rejected by the Command Inbox (12 during Phase 3 Link Recovery degraded mesh + 1 during Phase 4 Tactical Flapping). The "24" figure was produced in bidirectional multi-node stress tests where 12 duplicates were logged across Outage 1 and 12 across Outage 2 under un-aged burst retry (12 + 12 = 24). |
+| **Tactical Compression Factor** | **1.72x** | **5.89x** (also **7.43x**) | `analyst_workload_eval.py` FP clustering vs total entity clustering vs human review items | **Different filters applied:**<br>• **1.72x** ($1,599 \rightarrow 932$): False-positive spatial clustering ratio (only false alarms).<br>• **5.89x** ($14,008 \rightarrow 2,379$): Overall spatial entity clustering ratio (merging 320 px sliding-window tiling overlap duplicates across all classes).<br>• **7.43x** ($14,008 \rightarrow 1,886$): Review items compression ratio after both spatial clustering and 493 isolated vehicle auto-closures (86.54% review reduction). |
+

@@ -1827,9 +1827,9 @@ export function App() {
               <span>{telemetry?.jetson_edge_profiles?.jetson_agx_orin_64gb?.inference_engine?.split(' ')[0] || 'TRT'}</span>
             </div>
             <p>
-              Target Envelope: &le;60W (Unvalidated)<br />
-              Latency: unmeasured, rough estimate only<br />
-              Rate: unmeasured, rough estimate only
+              Target Envelope: &le;60W (unmeasured, rough estimate only)<br />
+              Latency: [10.8 ms – 23.8 ms] (unmeasured, rough estimate only)<br />
+              Rate: [42.0 – 92.6 FPS] (unmeasured, rough estimate only)
             </p>
             <div className="edge-foot">
               <span><Wifi size={13} /> 100% DDIL Ready</span>
@@ -4341,10 +4341,10 @@ export function App() {
                       </span>
                     </div>
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px', fontSize: '10px', color: '#9bb1ba' }}>
-                      <div>Wide Latency Range: <b style={{ color: '#fbbf24', fontSize: '12px' }}>unmeasured, rough estimate only</b></div>
-                      <div>Wide Framerate Range: <b style={{ color: '#fbbf24', fontSize: '12px' }}>unmeasured, rough estimate only</b></div>
+                      <div>Wide Latency Range: <b style={{ color: '#fbbf24', fontSize: '12px' }}>[10.8 ms – 23.8 ms] (unmeasured, rough estimate only)</b></div>
+                      <div>Wide Framerate Range: <b style={{ color: '#fbbf24', fontSize: '12px' }}>[42.0 – 92.6 FPS] (unmeasured, rough estimate only)</b></div>
                       <div>Measured Power: <b style={{ color: '#9bb1ba' }}>not estimated</b> <small>(requires Jetson tegrastats rail sampling)</small></div>
-                      <div>Envelope Status: <b style={{ color: '#fbbf24' }}>target envelope &le;60W, not validated</b></div>
+                      <div>Envelope Status: <b style={{ color: '#fbbf24' }}>target envelope &le;60W (unmeasured, rough estimate only)</b></div>
                       <div style={{ gridColumn: 'span 2', fontSize: '9px', color: '#819ba8', background: '#0e181f', padding: '6px', borderRadius: '4px' }}>
                         <div>📐 <b>Compute-Bound:</b> {telemetry?.jetson_edge_profiles?.jetson_agx_orin_64gb?.compute_bound_formula || '17.39ms * (58.2 / 42.6 Dense TFLOPs) = 23.8 ms'}</div>
                         <div>📊 <b>Bandwidth-Bound:</b> {telemetry?.jetson_edge_profiles?.jetson_agx_orin_64gb?.bandwidth_bound_formula || '17.39ms * (256.0 / 204.8 GB/s) = 21.7 ms'}</div>
@@ -4367,10 +4367,10 @@ export function App() {
                       </span>
                     </div>
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px', fontSize: '10px', color: '#9bb1ba' }}>
-                      <div>Wide Latency Range: <b style={{ color: '#f59e0b', fontSize: '12px' }}>unmeasured, rough estimate only</b></div>
-                      <div>Wide Framerate Range: <b style={{ color: '#f59e0b', fontSize: '12px' }}>unmeasured, rough estimate only</b></div>
+                      <div>Wide Latency Range: <b style={{ color: '#f59e0b', fontSize: '12px' }}>[32.8 ms – 98.8 ms] (unmeasured, rough estimate only)</b></div>
+                      <div>Wide Framerate Range: <b style={{ color: '#f59e0b', fontSize: '12px' }}>[10.1 – 30.5 FPS] (unmeasured, rough estimate only)</b></div>
                       <div>Measured Power: <b style={{ color: '#9bb1ba' }}>not estimated</b> <small>(requires Jetson tegrastats rail sampling)</small></div>
-                      <div>Envelope Status: <b style={{ color: '#fbbf24' }}>target envelope &le;15W, not validated</b></div>
+                      <div>Envelope Status: <b style={{ color: '#fbbf24' }}>target envelope &le;15W (unmeasured, rough estimate only)</b></div>
                       <div style={{ gridColumn: 'span 2', fontSize: '9px', color: '#819ba8', background: '#0e181f', padding: '6px', borderRadius: '4px' }}>
                         <div>📐 <b>Compute-Bound:</b> {telemetry?.jetson_edge_profiles?.jetson_orin_nano_8gb?.compute_bound_formula || '17.39ms * (58.2 / 10.24 Dense TFLOPs) = 98.8 ms'}</div>
                         <div>📊 <b>Bandwidth-Bound:</b> {telemetry?.jetson_edge_profiles?.jetson_orin_nano_8gb?.bandwidth_bound_formula || '17.39ms * (256.0 / 68.0 GB/s) = 65.5 ms'}</div>
