@@ -134,6 +134,61 @@
   border: 1px solid #1f4556 !important;
 }
 
+/* Tactical Sovereign Place Name Tooltips */
+.tactical-place-tooltip {
+  background: rgba(6, 17, 26, 0.90) !important;
+  border: 1px solid rgba(56, 189, 248, 0.45) !important;
+  border-radius: 3px !important;
+  color: #38bdf8 !important;
+  font-family: 'JetBrains Mono', 'Consolas', monospace !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  padding: 1px 5px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.85) !important;
+  white-space: nowrap !important;
+  pointer-events: auto !important;
+}
+.tactical-place-tooltip::before {
+  display: none !important;
+}
+
+/* Strategic Command / Naval Hub Tooltips */
+.tactical-hub-tooltip {
+  background: rgba(7, 22, 34, 0.95) !important;
+  border: 1px solid #00f0ff !important;
+  border-radius: 3px !important;
+  color: #00f0ff !important;
+  font-family: 'JetBrains Mono', 'Consolas', monospace !important;
+  font-size: 10px !important;
+  font-weight: 800 !important;
+  padding: 2px 6px !important;
+  box-shadow: 0 0 12px rgba(0, 240, 255, 0.4) !important;
+  letter-spacing: 0.5px !important;
+  white-space: nowrap !important;
+  pointer-events: auto !important;
+}
+.tactical-hub-tooltip::before {
+  display: none !important;
+}
+
+/* Maritime Regional Water Body Labels (Nautical Chart Style) */
+.tactical-water-tooltip {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  color: rgba(56, 189, 248, 0.50) !important;
+  font-family: 'JetBrains Mono', 'Consolas', monospace !important;
+  font-weight: 800 !important;
+  text-transform: uppercase !important;
+  text-shadow: 0 0 4px rgba(0, 0, 0, 0.95), 0 0 8px rgba(0, 0, 0, 0.9) !important;
+  pointer-events: none !important;
+  white-space: nowrap !important;
+}
+.tactical-water-tooltip::before {
+  display: none !important;
+}
+
+
 /* Subdued Tactical Buttons */
 .button.primary {
   background: linear-gradient(135deg, #10383b 0%, #082125 100%) !important;

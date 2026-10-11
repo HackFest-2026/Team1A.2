@@ -118,3 +118,90 @@ export const STRATEGIC_HUBS: StrategicHub[] = [
   { id: 'nine-deg', name: 'Nine Degree Channel (Minicoy / SLOC)', code: 'CHOKE-9DEG', lat: 9.000, lon: 73.000, type: 'CHOKEPOINT', radarRangeKm: 50 },
   { id: 'six-deg', name: 'Six Degree Channel (Indira Point Gateway)', code: 'CHOKE-6DEG', lat: 6.000, lon: 94.000, type: 'CHOKEPOINT', radarRangeKm: 55 }
 ];
+
+// Major Littoral Tactical Places, Defense Ports & Coastal Stations
+export interface TacticalPlace {
+  id: string;
+  name: string;
+  shortName: string;
+  lat: number;
+  lon: number;
+  tier: 1 | 2; // Tier 1: Major metros & primary naval hubs (shown at all zooms). Tier 2: Secondary ports (shown at zoom >= 5)
+  category: 'METRO_PORT' | 'NAVAL_PORT' | 'STRATEGIC_ISLAND' | 'REGIONAL_COAST';
+}
+
+export const TACTICAL_PLACES: TacticalPlace[] = [
+  // West Coast / Arabian Sea Littoral
+  { id: 'place-mumbai', name: 'Mumbai', shortName: 'MUMBAI', lat: 18.922, lon: 72.834, tier: 1, category: 'METRO_PORT' },
+  { id: 'place-goa', name: 'Goa (Mormugao)', shortName: 'GOA', lat: 15.405, lon: 73.805, tier: 1, category: 'NAVAL_PORT' },
+  { id: 'place-karwar', name: 'Karwar (INS Kadamba)', shortName: 'KARWAR', lat: 14.819, lon: 74.133, tier: 1, category: 'NAVAL_PORT' },
+  { id: 'place-mangalore', name: 'Mangalore', shortName: 'MANGALORE', lat: 12.914, lon: 74.856, tier: 2, category: 'METRO_PORT' },
+  { id: 'place-kozhikode', name: 'Kozhikode', shortName: 'KOZHIKODE', lat: 11.258, lon: 75.780, tier: 2, category: 'REGIONAL_COAST' },
+  { id: 'place-kochi', name: 'Kochi (Cochin)', shortName: 'KOCHI', lat: 9.931, lon: 76.267, tier: 1, category: 'NAVAL_PORT' },
+  { id: 'place-kollam', name: 'Kollam', shortName: 'KOLLAM', lat: 8.893, lon: 76.614, tier: 2, category: 'REGIONAL_COAST' },
+  { id: 'place-trivandrum', name: 'Thiruvananthapuram', shortName: 'TRIVANDRUM', lat: 8.524, lon: 76.936, tier: 2, category: 'METRO_PORT' },
+  { id: 'place-kanyakumari', name: 'Kanyakumari', shortName: 'KANYAKUMARI', lat: 8.088, lon: 77.538, tier: 1, category: 'REGIONAL_COAST' },
+  { id: 'place-porbandar', name: 'Porbandar', shortName: 'PORBANDAR', lat: 21.642, lon: 69.629, tier: 2, category: 'NAVAL_PORT' },
+  { id: 'place-okha', name: 'Okha / Dwarka', shortName: 'OKHA', lat: 22.466, lon: 69.072, tier: 2, category: 'NAVAL_PORT' },
+  { id: 'place-kandla', name: 'Kandla / Mundra', shortName: 'KANDLA', lat: 22.840, lon: 69.700, tier: 2, category: 'METRO_PORT' },
+  { id: 'place-veraval', name: 'Veraval', shortName: 'VERAVAL', lat: 20.900, lon: 70.360, tier: 2, category: 'REGIONAL_COAST' },
+  { id: 'place-surat', name: 'Surat (Hazira)', shortName: 'SURAT', lat: 21.170, lon: 72.830, tier: 2, category: 'METRO_PORT' },
+
+  // East Coast / Bay of Bengal Littoral
+  { id: 'place-tuticorin', name: 'Thoothukudi (Tuticorin)', shortName: 'TUTICORIN', lat: 8.764, lon: 78.134, tier: 2, category: 'METRO_PORT' },
+  { id: 'place-rameswaram', name: 'Rameswaram', shortName: 'RAMESWARAM', lat: 9.288, lon: 79.313, tier: 2, category: 'REGIONAL_COAST' },
+  { id: 'place-nagapattinam', name: 'Nagapattinam', shortName: 'NAGAPATTINAM', lat: 10.767, lon: 79.843, tier: 2, category: 'REGIONAL_COAST' },
+  { id: 'place-puducherry', name: 'Puducherry', shortName: 'PUDUCHERRY', lat: 11.941, lon: 79.808, tier: 2, category: 'REGIONAL_COAST' },
+  { id: 'place-chennai', name: 'Chennai', shortName: 'CHENNAI', lat: 13.083, lon: 80.270, tier: 1, category: 'METRO_PORT' },
+  { id: 'place-krishnapatnam', name: 'Krishnapatnam', shortName: 'KRISHNAPATNAM', lat: 14.280, lon: 80.120, tier: 2, category: 'METRO_PORT' },
+  { id: 'place-machilipatnam', name: 'Machilipatnam', shortName: 'MACHILIPATNAM', lat: 16.180, lon: 81.130, tier: 2, category: 'REGIONAL_COAST' },
+  { id: 'place-kakinada', name: 'Kakinada', shortName: 'KAKINADA', lat: 16.989, lon: 82.247, tier: 2, category: 'METRO_PORT' },
+  { id: 'place-vizag', name: 'Visakhapatnam', shortName: 'VIZAG', lat: 17.686, lon: 83.218, tier: 1, category: 'NAVAL_PORT' },
+  { id: 'place-paradip', name: 'Paradip', shortName: 'PARADIP', lat: 20.316, lon: 86.611, tier: 1, category: 'METRO_PORT' },
+  { id: 'place-dhamra', name: 'Dhamra', shortName: 'DHAMRA', lat: 20.800, lon: 86.950, tier: 2, category: 'METRO_PORT' },
+  { id: 'place-haldia', name: 'Haldia', shortName: 'HALDIA', lat: 22.060, lon: 88.060, tier: 2, category: 'METRO_PORT' },
+  { id: 'place-kolkata', name: 'Kolkata', shortName: 'KOLKATA', lat: 22.572, lon: 88.363, tier: 1, category: 'METRO_PORT' },
+
+  // Island Outposts & Strategic Territories
+  { id: 'place-port-blair', name: 'Port Blair', shortName: 'PORT BLAIR', lat: 11.623, lon: 92.726, tier: 1, category: 'STRATEGIC_ISLAND' },
+  { id: 'place-diglipur', name: 'Diglipur (N. Andaman)', shortName: 'DIGLIPUR', lat: 13.266, lon: 92.980, tier: 2, category: 'STRATEGIC_ISLAND' },
+  { id: 'place-car-nicobar', name: 'Car Nicobar', shortName: 'CAR NICOBAR', lat: 9.160, lon: 92.780, tier: 2, category: 'STRATEGIC_ISLAND' },
+  { id: 'place-campbell-bay', name: 'Campbell Bay (Gt Nicobar)', shortName: 'CAMPBELL BAY', lat: 6.990, lon: 93.850, tier: 1, category: 'STRATEGIC_ISLAND' },
+  { id: 'place-kavaratti', name: 'Kavaratti', shortName: 'KAVARATTI', lat: 10.570, lon: 72.630, tier: 1, category: 'STRATEGIC_ISLAND' },
+  { id: 'place-agatti', name: 'Agatti', shortName: 'AGATTI', lat: 10.853, lon: 72.193, tier: 2, category: 'STRATEGIC_ISLAND' },
+  { id: 'place-minicoy', name: 'Minicoy Island', shortName: 'MINICOY', lat: 8.280, lon: 73.050, tier: 1, category: 'STRATEGIC_ISLAND' },
+
+  // Regional Strategic Neighbors
+  { id: 'place-colombo', name: 'Colombo', shortName: 'COLOMBO', lat: 6.927, lon: 79.861, tier: 1, category: 'METRO_PORT' },
+  { id: 'place-hambantota', name: 'Hambantota', shortName: 'HAMBANTOTA', lat: 6.124, lon: 81.118, tier: 2, category: 'METRO_PORT' },
+  { id: 'place-trincomalee', name: 'Trincomalee', shortName: 'TRINCOMALEE', lat: 8.587, lon: 81.215, tier: 2, category: 'NAVAL_PORT' },
+  { id: 'place-jaffna', name: 'Jaffna', shortName: 'JAFFNA', lat: 9.661, lon: 80.025, tier: 2, category: 'REGIONAL_COAST' },
+  { id: 'place-male', name: 'Malé', shortName: 'MALÉ', lat: 4.175, lon: 73.509, tier: 1, category: 'METRO_PORT' },
+  { id: 'place-karachi', name: 'Karachi', shortName: 'KARACHI', lat: 24.860, lon: 67.001, tier: 1, category: 'METRO_PORT' },
+  { id: 'place-gwadar', name: 'Gwadar', shortName: 'GWADAR', lat: 25.121, lon: 62.325, tier: 1, category: 'NAVAL_PORT' }
+];
+
+// Major Maritime Water Bodies, Seas & Gulfs
+export interface MaritimeRegion {
+  id: string;
+  name: string;
+  lat: number;
+  lon: number;
+  zoomMin: number;
+  zoomMax: number;
+  letterSpacing?: string;
+  fontSize?: string;
+}
+
+export const MARITIME_REGIONS: MaritimeRegion[] = [
+  { id: 'region-arabian-sea', name: 'ARABIAN SEA', lat: 16.5, lon: 66.0, zoomMin: 2, zoomMax: 10, letterSpacing: '6px', fontSize: '13px' },
+  { id: 'region-bay-of-bengal', name: 'BAY OF BENGAL', lat: 15.5, lon: 87.5, zoomMin: 2, zoomMax: 10, letterSpacing: '6px', fontSize: '13px' },
+  { id: 'region-indian-ocean', name: 'INDIAN OCEAN', lat: 3.0, lon: 78.0, zoomMin: 2, zoomMax: 9, letterSpacing: '8px', fontSize: '14px' },
+  { id: 'region-andaman-sea', name: 'ANDAMAN SEA', lat: 11.5, lon: 95.0, zoomMin: 4, zoomMax: 11, letterSpacing: '4px', fontSize: '12px' },
+  { id: 'region-laccadive-sea', name: 'LACCADIVE SEA', lat: 9.2, lon: 74.5, zoomMin: 4, zoomMax: 11, letterSpacing: '3px', fontSize: '11px' },
+  { id: 'region-gulf-kutch', name: 'GULF OF KUTCH', lat: 22.6, lon: 69.4, zoomMin: 6, zoomMax: 13, letterSpacing: '2px', fontSize: '10px' },
+  { id: 'region-gulf-khambhat', name: 'GULF OF KHAMBHAT', lat: 21.4, lon: 72.3, zoomMin: 6, zoomMax: 13, letterSpacing: '2px', fontSize: '10px' },
+  { id: 'region-gulf-mannar', name: 'GULF OF MANNAR', lat: 8.6, lon: 79.0, zoomMin: 6, zoomMax: 13, letterSpacing: '2px', fontSize: '10px' },
+  { id: 'region-palk-strait', name: 'PALK STRAIT', lat: 9.8, lon: 79.5, zoomMin: 6, zoomMax: 13, letterSpacing: '2px', fontSize: '10px' }
+];
+

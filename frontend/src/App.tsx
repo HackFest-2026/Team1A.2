@@ -279,6 +279,7 @@ function TacticalMap({
   type BasemapMode = 'basemap' | 'dark' | 'terrain';
   const [basemapMode, setBasemapMode] = useState<BasemapMode>('basemap');
   const [localGeoOverlay, setLocalGeoOverlay] = useState<boolean>(true);
+  const [showPlaceNames, setShowPlaceNames] = useState<boolean>(true);
   const effectiveGeoOverlay = layers.geoOverlay !== undefined ? layers.geoOverlay : localGeoOverlay;
 
   const BASEMAP_TILES: Record<string, { url: string; attr: string; maxZoom: number }> = {
@@ -401,6 +402,26 @@ function TacticalMap({
         >
           <Globe size={13} /> {effectiveGeoOverlay ? 'Coastline/EEZ: ON' : 'Coastline/EEZ: OFF'}
         </button>
+        <button
+          onClick={() => setShowPlaceNames(v => !v)}
+          style={{
+            background: showPlaceNames ? 'rgba(56, 189, 248, 0.25)' : 'rgba(7, 18, 29, 0.85)',
+            border: `1px solid ${showPlaceNames ? '#00f0ff' : '#1e384b'}`,
+            color: showPlaceNames ? '#00f0ff' : '#728d9c',
+            padding: '5px 10px',
+            fontSize: '10px',
+            borderRadius: '4px',
+            cursor: 'pointer',
+            fontFamily: 'monospace',
+            fontWeight: 700,
+            display: 'flex',
+            alignItems: 'center',
+            gap: '5px'
+          }}
+          title="Toggle Tactical Place Names & Maritime Region Labels"
+        >
+          <Navigation size={13} /> {showPlaceNames ? 'Places: ON' : 'Places: OFF'}
+        </button>
       </div>
 
       <MapContainer center={center} zoom={6} scrollWheelZoom className="map">
@@ -412,10 +433,11 @@ function TacticalMap({
           maxZoom={BASEMAP_TILES[basemapMode].maxZoom}
         />
 
-        {/* Reusable Sovereign GeoJSON Overlay (Indian Coastline, EEZ, Graticules, Radar Rings) */}
+        {/* Reusable Sovereign GeoJSON Overlay (Indian Coastline, EEZ, Graticules, Radar Rings, Place Names) */}
         <OfflineGeoOverlay
           enabled={effectiveGeoOverlay}
           basemapMode={basemapMode}
+          showPlaceNames={showPlaceNames}
         />
 
         {sceneRect && <Rectangle bounds={sceneRect} pathOptions={{ color: '#54d2c5', weight: 2, dashArray: '5 5', fillOpacity: 0.05 }} />}
