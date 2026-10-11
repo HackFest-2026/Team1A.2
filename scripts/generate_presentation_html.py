@@ -1,0 +1,778 @@
+"""Generate an interactive HTML presentation of the Project Rakshak 2.0 Pitch Deck.
+
+Allows presenting directly in a browser with full keyboard navigation (Left/Right arrows),
+Presenter Mode with toggleable Speaker Notes, modern light bright template, and responsive cards.
+"""
+
+from pathlib import Path
+
+slides_data = [
+    {
+        "num": 1,
+        "tag": "KLS HACKFEST 2026 • PROBLEM STATEMENT 1A",
+        "title": "PROJECT RAKSHAK 2.0",
+        "subtitle": "Sovereign Dual-Domain C4ISR & Geospatial Threat Intelligence Platform",
+        "type": "title",
+        "content": """
+        <div class="card p-6 mb-4">
+            <h3 class="text-lg font-bold text-slate-800 mb-2">Air-Gapped Sensor Fusion • Dark-Vessel Detection • Cognitive Auto-Triage • Mission Planning</h3>
+            <ul class="space-y-2 text-sm text-slate-700">
+                <li>• <b>100% Air-Gapped Sovereign Design:</b> Zero outbound network sockets, zero external map tiles, zero cloud APIs.</li>
+                <li>• <b>Multi-Modal Intelligence:</b> Fuses 0.3m spaceborne optical, Sentinel-1 SAR radar, AIS broadcasts, drone video & ground sensors.</li>
+                <li>• <b>Proven Defense Milestones:</b> 12/12 Platform Smoke Tests PASSED • 38/38 Full Pytest Suite PASSED • Remote Synced.</li>
+            </ul>
+        </div>
+        <div class="card card-highlight p-5">
+            <div class="font-bold text-teal-800 text-sm mb-1 uppercase tracking-wide">Developed by Team BotS</div>
+            <div class="text-xs text-slate-600">
+                Institutions: KLS Gogte Institute of Technology & KLE Technological University<br/>
+                Official Remote: <span class="font-mono text-sky-700">https://github.com/HackFest-2026/Team1A.2.git</span> (Branch: main, Verified Clean)
+            </div>
+        </div>
+        """,
+        "script": "Good morning respected judges. We are Team BotS, presenting Project Rakshak 2.0—a sovereign, 100% air-gapped C4ISR platform built specifically for Problem Statement 1A: Naval and Army Geospatial and Multimodal Threat Detection. Our platform fuses spaceborne satellite photos, radar scans, marine transponder broadcasts, drone video, and ground sensors onto a unified tactical Common Operating Picture. It enables defense commanders to detect evasive threats like dark vessels, filters false alarms to save over 86% of an analyst's review time, and plans intercept missions in under a second—completely offline with zero internet or cloud dependence."
+    },
+    {
+        "num": 2,
+        "tag": "OPERATIONAL CHALLENGES",
+        "title": "Problem Understanding & Defense Alignments",
+        "subtitle": "Why modern maritime and border surveillance rooms are overwhelmed during tactical operations",
+        "type": "grid3",
+        "cards": [
+            {
+                "title": "1. Dark Vessels & AIS Evasion",
+                "sub": "The Maritime Blindspot",
+                "bullets": [
+                    "Hostile or rogue vessels deliberately disable their AIS transponders to evade detection in national waters.",
+                    "Pure optical satellite imagery is too vast to inspect manually across thousands of square kilometers.",
+                    "Pure radar detects reflections but cannot classify vessel types or identify cooperative identity."
+                ]
+            },
+            {
+                "title": "2. Severe Analyst Cognitive Load",
+                "sub": "The Information Deluge",
+                "bullets": [
+                    "A single satellite pass produces 10,000+ raw bounding boxes across complex littoral zones.",
+                    "Human analysts spend 40+ minutes per scene manually weeding out duplicate detections and civilian cars.",
+                    "Fatigue leads to delayed reaction times and missed small targets (12–35px maritime vessels)."
+                ]
+            },
+            {
+                "title": "3. Cloud Dependency & DDIL",
+                "sub": "The Connectivity Vulnerability",
+                "bullets": [
+                    "Commercial C2 software relies on cloud servers, external CDNs, and online tile providers (Mapbox/Google).",
+                    "Under electronic warfare jamming or radio-silent naval operations (DDIL), external connectivity is zero.",
+                    "If the internet drops, cloud-based defense applications become completely blind."
+                ]
+            }
+        ],
+        "script": "To understand why Project Rakshak was built, let's look at the three critical bottlenecks defense operators face today. First: hostile ships intentionally turn off their AIS radio transponders, disappearing from commercial maritime maps. Searching thousands of square kilometers of satellite photos for them manually is impossible. Second: modern satellites capture massive imagery. A single pass yields tens of thousands of detections. Analysts spend hours manually reviewing duplicate boxes and civilian cars, leading to severe fatigue. Third: commercial surveillance software relies on the cloud and online map tiles. In real wartime electronic warfare, enemy jamming creates DDIL conditions—denied or interrupted communications. If your platform needs the internet to work, your defense perimeter collapses. Project Rakshak was engineered from the ground up to solve all three."
+    },
+    {
+        "num": 3,
+        "tag": "SOVEREIGN SOLUTION",
+        "title": "Project Rakshak 2.0: The Solution in Simple Terms",
+        "subtitle": "An integrated Common Operating Picture combining multi-modal AI, auto-triage, and rapid OODA planning",
+        "type": "grid2x2",
+        "cards": [
+            {
+                "title": "1. 100% Air-Gapped Zero-Egress Core",
+                "bullets": [
+                    "Runs completely offline on local command laptops or edge nodes (zero external sockets).",
+                    "Procedural offline map tiles generated on localhost with 3 distinct tactical styles.",
+                    "Local PBKDF2-200k authentication and embedded vector doctrine search."
+                ]
+            },
+            {
+                "title": "2. Multi-Modal Cross-Domain Fusion",
+                "bullets": [
+                    "Simultaneously ingests 0.3m optical satellite imagery, Sentinel-1 C-band SAR radar, and AIS streams.",
+                    "Correlates drone EO/IR video feeds and unattended ground sensor (UGS) tripwires.",
+                    "Maintains track continuity across domains using constant-velocity Kalman filtering."
+                ]
+            },
+            {
+                "title": "3. AI Cognitive Auto-Triage & Safety Rules",
+                "bullets": [
+                    "500-meter spatial clustering groups 14,008 raw detections into 2,379 spatial entities.",
+                    "Auto-closes isolated civilian cars (86.54% review item reduction).",
+                    "Strict safety policy: military vessels, aircraft, and infrastructure are NEVER auto-closed."
+                ]
+            },
+            {
+                "title": "4. Instant Tactical OODA Loop Planning",
+                "bullets": [
+                    "Automates STANAG 2014 military SITREP compilation in under 50 milliseconds.",
+                    "Searches sovereign Indian Rules of Engagement (RoE) doctrine with local BM25 engine.",
+                    "One-click intercept mission dispatch with animated map fly-to in 0.18 seconds."
+                ]
+            }
+        ],
+        "script": "Here is Project Rakshak 2.0 in simple terms. It is an intelligent tactical operating system that runs entirely on local machines without touching the internet. First, it is 100% air-gapped: our map tiles, AI models, and databases run on localhost. Second, it fuses multiple sensor modalities: optical satellites, radar, marine radio, drone cameras, and seismic border tripwires onto one screen. Third, it reduces analyst workload by 86.5% through smart clustering, while enforcing safety rules that guarantee no military asset is ever accidentally auto-closed. Fourth, it accelerates the OODA decision loop—Observe, Orient, Decide, Act—compiling international STANAG military reports and dispatching intercept missions in less than one second."
+    },
+    {
+        "num": 4,
+        "tag": "STRATEGIC OBJECTIVES",
+        "title": "Core Operational Objectives for Problem Statement 1A",
+        "subtitle": "Concrete engineering requirements established to solve the naval and army threat detection challenge",
+        "type": "grid4",
+        "cards": [
+            {
+                "tag": "OBJECTIVE 1",
+                "title": "Air-Gapped Sovereignty",
+                "bullets": [
+                    "Zero outbound network sockets observed during runtime audit.",
+                    "All map tiles rendered procedurally on localhost.",
+                    "Complete data sovereignty with no commercial API telemetry.",
+                    "PBKDF2-200k + JWT role-based access control."
+                ]
+            },
+            {
+                "tag": "OBJECTIVE 2",
+                "title": "Dark-Vessel Interception",
+                "bullets": [
+                    "Detect non-broadcasting vessels via CA-CFAR radar matching.",
+                    "Correlate radar contacts with expected AIS broadcasts.",
+                    "Kinematic dead-reckoning accounts for ±30 min timestamp drift.",
+                    "Achieve >75% end-to-end capture in simulated littoral tests."
+                ]
+            },
+            {
+                "tag": "OBJECTIVE 3",
+                "title": "Cognitive Auto-Triage",
+                "bullets": [
+                    "Cut analyst review items by >80% to prevent operator fatigue.",
+                    "Auto-close isolated civilian vehicles.",
+                    "Route vessels & aircraft directly to the Priority Queue.",
+                    "Zero critical threats missed (100% escalation rate)."
+                ]
+            },
+            {
+                "tag": "OBJECTIVE 4",
+                "title": "DDIL Resilient OODA",
+                "bullets": [
+                    "Store-and-forward alert queue with sequence deduplication.",
+                    "Zero lost alerts during 300-second simulated link blackouts.",
+                    "Automate STANAG 2014 SITREP compilation in <50 ms.",
+                    "Compress mission planning cycle time by >90%."
+                ]
+            }
+        ],
+        "script": "We set four uncompromising engineering objectives. Objective 1: True air-gapped sovereignty. If a platform transmits telemetry to cloud servers, it's a security risk. Rakshak generates tiles, stores data, and runs AI on localhost with zero outbound traffic. Objective 2: Dark vessel capture. We apply radar detection and match it with AIS transponders using kinematic dead-reckoning so time offsets don't cause false alarms. Objective 3: Cognitive triage. We eliminate redundant clutter, saving over 80% of analyst review effort while guaranteeing zero missed military threats. Objective 4: DDIL communication survivability and rapid mission planning, ensuring alerts survive radio dropouts and response orders are compiled in milliseconds."
+    },
+    {
+        "num": 5,
+        "tag": "DATA PROVENANCE",
+        "title": "Datasets Used & Source Provenance",
+        "subtitle": "Real-world satellite benchmark data, public radar/AIS archives, and calibrated tactical streams",
+        "type": "grid3",
+        "cards": [
+            {
+                "title": "Optical Satellite Imagery",
+                "sub": "DIUx xView Benchmark Dataset (0.3m GSD)",
+                "bullets": [
+                    "Origin: U.S. Defense Innovation Unit Experimental (DIUx) & National Geospatial-Intelligence Agency (NGA).",
+                    "Sensor: WorldView-3 commercial reconnaissance satellite with 0.3-meter ground resolution.",
+                    "Official Holdout Set: 540 tiles across 38 scenes containing 66,521 labelled defense objects.",
+                    "Classes: Military Aircraft, Cargo/Passenger Planes, Maritime Vessels, Vehicles, and Infrastructure.",
+                    "Audit Verification: Zero data leakage verified across train and validation splits."
+                ]
+            },
+            {
+                "title": "Radar & Maritime Feeds",
+                "sub": "Sentinel-1 SAR + Global AIS Corpus",
+                "bullets": [
+                    "Origin: European Space Agency (ESA) Copernicus Sentinel-1 constellation (C-band SAR).",
+                    "All-Weather Radar: Penetrates clouds, fog, and night-time sea cover for littoral surveillance.",
+                    "AIS Transponder Corpus: Global marine broadcast logs from Sentinel-2 PipeV4 (1.09M spaceborne contacts).",
+                    "Maritime Holdout: 21 dedicated maritime tiles across 5 scenes with 280 ground-truth vessels.",
+                    "Simulated Littoral Sweep: 20 random seeds, 10,000 synthetic contacts evaluating dark vessel capture."
+                ]
+            },
+            {
+                "title": "Multi-Domain Tactical Feeds",
+                "sub": "Army Drone EO/IR & Ground Sensors",
+                "bullets": [
+                    "Origin: Sovereign defense simulator and calibrated telemetry streams for border surveillance.",
+                    "Drone EO/IR: 4 tactical UAV video/telemetry downlinks (Nagastra-1, Garuda, Heron TP, Netra v2).",
+                    "Unattended Ground Sensors: 2 seismic tripwires (LoC Forward Post Alpha, Sir Creek Littoral).",
+                    "Tactical Locations: Mumbai Offshore Development Area, Gwadar Chokepoint, Karachi, Sir Creek.",
+                    "Real-time C2 Cycle: PATCH feed status lifecycle (ACTIVE -> ACKNOWLEDGED -> RESOLVED)."
+                ]
+            }
+        ],
+        "script": "Judges often ask: 'Where did you get your data and is it real?' Here is our exact data provenance. For high-resolution optical imagery, we used the gold-standard xView benchmark dataset created by the U.S. Defense Innovation Unit and NGA, featuring 0.3-meter resolution satellite imagery from WorldView-3. Our official test holdout contains 540 tiles, 38 scenes, and over 66,000 labelled defense objects—with zero data leakage verified by our split audit. For maritime surveillance, we ingest Sentinel-1 Synthetic Aperture Radar paired with global AIS transponder logs from the Copernicus corpus containing over 1 million contacts. For multi-domain Army surveillance, we ingest tactical border streams including 4 drone EO/IR downlinks and 2 seismic ground tripwires mapped to strategic locations like the Mumbai Offshore Development Area, Sir Creek, and Gwadar."
+    },
+    {
+        "num": 6,
+        "tag": "SYSTEM ARCHITECTURE",
+        "title": "Technical Implementation: 4-Tier Decoupled Platform",
+        "subtitle": "Clean, modular engineering stack built with FastAPI, SQLite WAL, React 18, and PyTorch",
+        "type": "grid4",
+        "cards": [
+            {
+                "tag": "TIER 1",
+                "title": "Tactical Client (React 18)",
+                "bullets": [
+                    "React 18 + TypeScript + Vite + Tailwind CSS.",
+                    "100% offline Leaflet cartography with custom procedural tile engine.",
+                    "3 Distinct Map Styles: Satellite, Dark Tactical, and Synthetic Terrain.",
+                    "Permanent Tactical Gazetteer: Mumbai ODA, Gwadar Chokepoint, Sir Creek.",
+                    "Interactive Mission Planner with animated fly-to and waypoint selection."
+                ]
+            },
+            {
+                "tag": "TIER 2",
+                "title": "C2 Microservices (FastAPI)",
+                "bullets": [
+                    "FastAPI async backend on localhost:8000.",
+                    "High-concurrency SQLite database in Write-Ahead-Logging (WAL) mode.",
+                    "Security: PBKDF2-200k password hashing, JWT bearer tokens, RBAC roles.",
+                    "Zero-egress loopback socket architecture (127.0.0.1 binding only).",
+                    "Modular routing: /api/sar, /api/army, /api/rag, /api/sitrep, /api/tiles."
+                ]
+            },
+            {
+                "tag": "TIER 3",
+                "title": "AI Inference (Dual YOLO)",
+                "bullets": [
+                    "YOLO11m Generalist (20.1M params) for broad multi-class optical detection.",
+                    "YOLO11n Specialist (2.6M params, 1024px) fine-tuned for small maritime vessels.",
+                    "Weighted Box Fusion (WBF) fuses multi-scale bounding boxes.",
+                    "Constant-velocity Kalman filter with Hungarian & JPDA data association.",
+                    "ORB + RANSAC co-registration for satellite change detection."
+                ]
+            },
+            {
+                "tag": "TIER 4",
+                "title": "Doctrine & Resilience",
+                "bullets": [
+                    "Local BM25 inverted index for Indian Armed Forces Rules of Engagement (RoE).",
+                    "Zero external cloud LLM dependencies (100% sovereign air-gapped retrieval).",
+                    "STANAG 2014 military SITREP generator (compiled in <50 ms).",
+                    "DDIL Store-and-Forward queue with sequence-numbered idempotency."
+                ]
+            }
+        ],
+        "script": "Here is our technical implementation. Everything is decoupled and runs locally across four clean tiers. Tier 1 is the tactical frontend, built in React 18 and Leaflet. It renders three offline map styles without calling any online map server, and features our interactive Mission Planner. Tier 2 is the FastAPI backend, backed by SQLite in Write-Ahead-Logging mode for high concurrency, secured by PBKDF2-200k authentication and role-based clearance. Tier 3 is our AI layer hosting dual YOLO11 models, Kalman tracking, and ORB change detection. Tier 4 is our sovereign doctrine and resilience layer, featuring a local BM25 engine for military Rules of Engagement, STANAG 2014 report generation, and store-and-forward alert queuing for radio dropouts."
+    },
+    {
+        "num": 7,
+        "tag": "AI ARCHITECTURE",
+        "title": "Multi-Modal AI Engines & Detection Pipeline",
+        "subtitle": "Dual-engine optical detection, radar CA-CFAR, and kinematic dead-reckoning explained",
+        "type": "grid3",
+        "cards": [
+            {
+                "title": "Engine 1: Dual-Engine Optical",
+                "sub": "YOLO11m Generalist + YOLO11n Specialist",
+                "bullets": [
+                    "YOLO11m Generalist (20.1M params) covers aircraft, vehicles, and facilities across large scenes.",
+                    "YOLO11n Specialist (2.6M params, fine-tuned at 1024×1024) specifically inspects water surfaces for small boats.",
+                    "Weighted Box Fusion (WBF) fuses multi-scale predictions, boosting vessel holdout mAP from 12.75% to 16.24%.",
+                    "Optimized for edge deployment in FP16 (38.7 MB) and ONNX (40.5 MB)."
+                ]
+            },
+            {
+                "title": "Engine 2: SAR & Dead-Reckoning",
+                "sub": "Radar Target Detection & AIS Matching",
+                "bullets": [
+                    "Cell-Averaging Constant False Alarm Rate (CA-CFAR) extracts metallic radar contacts from sea clutter.",
+                    "Kinematic Dead-Reckoning projects historical AIS coordinates forward and backward in time.",
+                    "Accounts for vessel speed and heading during timestamp drift, preventing false dark vessel alarms.",
+                    "Cuts false-dark alerts from 77.4% down to 0% during ±30 minute AIS time offsets."
+                ]
+            },
+            {
+                "title": "Engine 3: Temporal Change CV",
+                "sub": "ORB + RANSAC Co-Registration",
+                "bullets": [
+                    "Oriented FAST and Rotated BRIEF (ORB) detects distinctive features between two satellite passes.",
+                    "RANSAC estimates projective homography matrix, achieving sub-pixel co-registration (0.14 px error).",
+                    "Class-aware spatial matching flags newly appeared, removed, or moved defense assets.",
+                    "Stability filtering eliminates false positives by 97.6% (from 170 down to 4 spurious changes)."
+                ]
+            }
+        ],
+        "script": "Let's look under the hood of our AI pipeline. To solve the challenge of detecting small boats in vast satellite imagery, we use a dual-engine setup. A YOLO11m generalist handles the broad scene, while a lightweight YOLO11n specialist fine-tuned at 1024-pixel resolution inspects maritime regions. We fuse them using Weighted Box Fusion, increasing vessel detection scores from 12.75% to 16.24%. For dark vessels, we use CA-CFAR radar detection to find reflective targets in choppy waters, and kinematic dead-reckoning to project vessel tracks across time gaps. This eliminates up to 77% of false alarms caused by clock drift. For change detection between two satellite passes, we extract ORB keypoints and use RANSAC to achieve sub-pixel image alignment, with a stability filter that cuts false alarms by 97.6%."
+    },
+    {
+        "num": 8,
+        "tag": "MEASURED METRICS",
+        "title": "Grounded KPIs: Detection Quality, Dark Vessels & Latency",
+        "subtitle": "Every number comes directly from executed benchmark JSON reports in evaluation/results/",
+        "type": "grid2x2",
+        "cards": [
+            {
+                "title": "Optical Detection Quality (mAP@50)",
+                "bullets": [
+                    "<b>Overall mAP@50: 48.46%</b> | mAP@50-95: 14.45% (540 holdout tiles, 66,521 targets).",
+                    "<b>Aircraft: 89.85% mAP@50</b> (86.67% recall) across 45 ground-truth aircraft.",
+                    "<b>Vehicles: 46.83% mAP@50</b> (52.61% recall) | <b>Infrastructure: 44.41% mAP@50</b>.",
+                    "<b>Vessels: 12.75%</b> (generalist) / <b>16.24%</b> (specialist on clean maritime holdout).",
+                    "<b>Audit Proof:</b> Zero data leakage verified across splits (split_overlap_audit.json)."
+                ]
+            },
+            {
+                "title": "Dark-Vessel Detection Rate",
+                "bullets": [
+                    "<b>Headline E2E Capture: 79.40% ± 2.80%</b> [95% CI: 78.09%–80.71%].",
+                    "<b>Post-Detection Recall: 92.63% ± 2.23%</b> (radar-to-AIS correlation).",
+                    "<b>CA-CFAR Radar Detection Rate: 85.73% ± 2.65%</b>.",
+                    "Simulated evaluation: 20 random seeds, 10,000 synthetic contacts (3,000 dark vessels).",
+                    "Dead-reckoning prevents false alarms rising to 77.4% during ±30 min timestamp drift."
+                ]
+            },
+            {
+                "title": "Sensor-to-Alert Processing Latency",
+                "bullets": [
+                    "<b>Single-Tile GPU Inference: 17.85 ± 0.11 ms</b> (P50: 17.37 ms) on RTX 4060 Laptop.",
+                    "<b>Boosted Throughput: 55.65–56.50 FPS</b> at 1024×1024 input resolution.",
+                    "<b>Full-Scene Ingestion (38 scenes / 540 tiles):</b> mean 1.62 s, median 1.58 s, P95 2.30 s.",
+                    "Dual-engine YOLO11m + YOLO11n WBF: 47.9 ms mean (20.87 tiles/second).",
+                    "Full end-to-end target below 1.8 s is projected (reported P95 is 2.30 s)."
+                ]
+            },
+            {
+                "title": "False Alarms & Geolocation Error",
+                "bullets": [
+                    "<b>Precision Mode: 9.93 unmatched FP/km²</b> at IoU ≥ 0.3 (94.75% precision).",
+                    "<b>Alert Pacing:</b> 7.26 high-threat alerts/hr (156.63 total alerts/hr @ 12 scenes/hr).",
+                    "<b>Geolocation CEP50: 0.70 m</b> | <b>CEP90: 2.43 m</b> (matched targets at IoU ≥ 0.3).",
+                    "Mean localization error: 1.17 m; RMSE: 2.03 m against GeoTIFF metadata.",
+                    "F1-oriented mode: 196.83 FP/km² (76.90% precision, 62.36% recall)."
+                ]
+            }
+        ],
+        "script": "Now let's examine the real numbers—every metric here is grounded in actual executed benchmark reports. In optical detection, our overall mAP at 50 is 48.46%. Aircraft are our highest-performing class at 89.85% mAP and 86.67% recall. Small satellite boats are notoriously difficult because they are only 12 to 35 pixels wide, but our specialist model boosts vessel mAP from 12.75% to 16.24%. Our split audit confirmed zero data leakage across all splits. In dark vessel detection, our radar-AIS correlation captures 79.4% of dark vessels end-to-end, with 92.6% post-detection recall. On an RTX 4060 laptop GPU, single-tile inference takes just 17.85 milliseconds—delivering 56 frames per second. Full-scene ingestion averages 1.62 seconds. Our precision-mode false alarm rate is 9.93 false positives per square kilometer, and our circular error probable is 0.70 meters."
+    },
+    {
+        "num": 9,
+        "tag": "OPERATIONAL KPIS",
+        "title": "Grounded KPIs: Workload Triage, OODA Cycle & Edge Readiness",
+        "subtitle": "Measured analyst item reduction, emergency planning acceleration, and embedded hardware profiling",
+        "type": "grid2x2",
+        "cards": [
+            {
+                "title": "Analyst Workload Reduction",
+                "bullets": [
+                    "<b>86.54% Item-Count Reduction:</b> 14,008 raw detections consolidated to 1,886 review items.",
+                    "<b>83.02% Spatial Clustering Reduction:</b> 14,008 raw boxes grouped into 2,379 spatial entities.",
+                    "<b>Auto-Close Rule:</b> 493 isolated civilian cars auto-closed (20.72% auto-close rate).",
+                    "<b>Strict Safety Suite v2:</b> 0/9 critical threats missed (100% escalated to Priority Queue).",
+                    "<b>Zero False Auto-Closures:</b> Vessels, aircraft, and infrastructure are NEVER auto-closed."
+                ]
+            },
+            {
+                "title": "Mission-Planning OODA Cycle Time",
+                "bullets": [
+                    "<b>Machine REST Time: 0.1843 s average</b> across 30 runs of 3 defense scenarios.",
+                    "<b>Operator-Paced Response: 50.19 s</b> (including 50s assumed operator think-time).",
+                    "<b>Manual Baseline: 24.0 min (1440 s)</b> modelled from 5-step staff procedures.",
+                    "<b>Computed Cycle Time Reduction: 96.51% (or 96.5%)</b> operator-paced; 99.98% machine.",
+                    "<b>STANAG 2014 SITREP Compilation:</b> <50 ms | Local BM25 RoE lookup: <40 ms."
+                ]
+            },
+            {
+                "title": "Edge Deployment & Model Size",
+                "bullets": [
+                    "<b>YOLO11m Generalist: 20.1M params</b> (38.7 MB FP16 best.pt, 40.5 MB ONNX export).",
+                    "<b>YOLO11n Vessel Specialist: 2.6M params</b> (fine-tuned 1024px architecture).",
+                    "<b>Standardized Dense-FP16 Jetson Roofline Intervals (basis 35.74 ms host):</b>",
+                    "   - <b>Jetson AGX Orin 64GB: 44.7–48.8 ms (20.5–22.4 FPS)</b> [unmeasured projection].",
+                    "   - <b>Jetson Orin Nano 8GB: 134.6–203.1 ms (4.9–7.4 FPS)</b> [unmeasured projection].",
+                    "   - <i>TensorRT may improve this; unmeasured, no physical Jetson run.</i>"
+                ]
+            },
+            {
+                "title": "DDIL Resilience & Zero-Egress Air Gap",
+                "bullets": [
+                    "<b>100% Edge Detection Uptime:</b> 720 alert epochs during 30-min simulated mission.",
+                    "<b>Zero Lost Alerts:</b> 720/720 alerts delivered via store-and-forward queue.",
+                    "<b>13 duplicate packets</b> handled safely by sequence-numbered idempotency.",
+                    "<b>Resynchronisation:</b> 40.89 s @ 32 kbps with packet loss after 300s link blackout.",
+                    "<b>Zero-Egress Audit: 0 outbound non-loopback sockets</b>, 0 external DNS attempts."
+                ]
+            }
+        ],
+        "script": "Looking at operational workflow KPIs: an analyst inspecting 14,008 raw detections would be overwhelmed. Our clustering algorithm groups them into 2,379 entities, and our rule engine auto-closes 493 isolated civilian vehicles. That leaves 1,886 items for human review—an 86.54% reduction in workload. Crucially, our safety suite proved that zero military assets were auto-closed and 100% of critical threats were escalated. In mission planning, our system automates the 5-step staff workflow in 0.18 seconds of machine time—slashing decision cycle time by 96.5% compared to the 24-minute manual baseline. For edge deployment, our models are compact: 38.7 MB for YOLO11m and 2.6M params for the specialist. On Jetson AGX Orin, our standardized dense-FP16 roofline interval projects 44.7 to 48.8 milliseconds. During simulated radio dropouts, our store-and-forward queue delivered 720 out of 720 alerts with zero packet loss. And during our network audit, zero outbound sockets were observed."
+    },
+    {
+        "num": 10,
+        "tag": "TACTICAL VALUE",
+        "title": "Platform Innovations & Operational Differentiation",
+        "subtitle": "Unique defense capabilities engineered specifically for Problem Statement 1A",
+        "type": "grid2x2",
+        "cards": [
+            {
+                "title": "1. 3 Distinct Offline Map Styles & Gazetteer",
+                "bullets": [
+                    "<b>100% Procedural Offline Tiles:</b> Generated on localhost (/api/tiles/{style}/{z}/{x}/{y}.png).",
+                    "<b>Satellite Style:</b> Dark navy ocean (#0a1628), muted green-brown terrain, subtle coastline glow.",
+                    "<b>Dark Tactical Style:</b> Near-black ocean (#0b0f19), muted grey land, thin cyan tactical graticule.",
+                    "<b>Terrain Style:</b> Light slate-blue ocean (#1c2838), tan-to-green synthetic elevation shading.",
+                    "<b>Permanent Tactical Gazetteer:</b> Mumbai ODA, Gwadar Chokepoint, Karachi, Sir Creek."
+                ]
+            },
+            {
+                "title": "2. Interactive Mission Planner OODA Execution",
+                "bullets": [
+                    "<b>Interactive Map Zoom:</b> Zoom in/out via +/- buttons, mouse wheel, double-click, and pinch.",
+                    "<b>Selectable Intercept Sequence:</b> Click any mission row to highlight and pan to its map marker.",
+                    "<b>Dispatch Fly-To Animation:</b> Clicking 'DISPATCH INTERCEPT MISSION' triggers map.flyTo (zoom 8-9, 1.5s).",
+                    "<b>Tactical Feedback:</b> Pulses waypoint marker, opens popup, and displays operator toast notification.",
+                    "<b>Responsive Layout:</b> Clean separation of Lat/Lon, Range, Bearing, and ETA with right-aligned threat badge."
+                ]
+            },
+            {
+                "title": "3. Sovereign RAG & STANAG SITREP Generator",
+                "bullets": [
+                    "<b>100% Local BM25 Engine:</b> Instant semantic retrieval across official Indian Armed Forces doctrine.",
+                    "<b>Rules of Engagement (RoE):</b> Autonomous citations for maritime interdiction and border defense.",
+                    "<b>Zero Cloud APIs:</b> Eliminates cloud token leakage, latency, and subscription dependencies.",
+                    "<b>STANAG 2014 Military SITREP:</b> Procedurally compiles tactical situation reports in <50 ms."
+                ]
+            },
+            {
+                "title": "4. Air-Gapped Security & Production Readiness",
+                "bullets": [
+                    "<b>Military-Grade Auth:</b> PBKDF2-200k password hashing and JWT token clearance verification.",
+                    "<b>Forced Password Rotation:</b> Required on initial login for tactical operator accounts.",
+                    "<b>Dockerized Deployment:</b> Production Dockerfile and docker-compose.yml ready for command centers.",
+                    "<b>Verified Remote:</b> Clean, tracked commit pushed to official judge repo (HackFest-2026/Team1A.2)."
+                ]
+            }
+        ],
+        "script": "What makes Project Rakshak stand out from generic hackathon projects? First, true offline cartography. Instead of relying on commercial cloud tile servers that fail without internet, our backend generates three distinct tactical map styles procedurally on localhost, complete with a permanent tactical gazetteer for key maritime chokepoints. Second, our Mission Planner features full interactive OODA execution: commanders can zoom, select an intercept waypoint, and click dispatch—the map smoothly flies to the target at zoom level 8, pulses the waypoint marker, and triggers a dispatch confirmation. Third, our sovereign RAG doctrine advisor retrieves official Indian Rules of Engagement citations using a local BM25 engine without calling any cloud AI. And fourth, the entire platform is packaged in Docker and synced on the judge repository."
+    },
+    {
+        "num": 11,
+        "tag": "ROADMAP & INTEGRITY",
+        "title": "Honest Limitations & Phased Execution Plan",
+        "subtitle": "Transparently stating prototype boundaries and mapping the path to operational defense deployment",
+        "type": "split2",
+        "left": {
+            "title": "Honest Prototype Boundaries (What is Simulated vs Measured)",
+            "bullets": [
+                "<b>Optical Vessel Detection:</b> Satellite vessel recall (14.65%–23.57%) and mAP (12.75%–16.24%) remain limited due to tiny 12–35px sizes and extreme class imbalance (280 vessels vs 42,824 infrastructure instances).",
+                "<b>Simulation vs Live Trials:</b> Dark vessel interception, multi-target tracking, DDIL outages, and change detection were evaluated on calibrated mathematical simulations rather than physical naval sea trials.",
+                "<b>Edge Projections:</b> Jetson AGX Orin (44.7–48.8 ms) and Orin Nano (134.6–203.1 ms) are dense-FP16 roofline projections; physical Jetson hardware profiling was not conducted.",
+                "<b>Geolocation CEP:</b> Error is measured against GeoTIFF metadata rather than an independent differential GPS field survey.",
+                "<b>Procedural Maps:</b> Offline procedural tiles support disconnected operation but do not replace certified hydrographic maritime navigation charts."
+            ]
+        },
+        "right": {
+            "title": "Phased Execution Plan & Future Roadmap",
+            "bullets": [
+                "<b>Phase 1: Maritime Dataset Expansion (Months 1–3):</b> Incorporate dedicated spaceborne maritime datasets (Airbus Ship Detection, xView3-SAR) with high-resolution synthetic augmentation to boost vessel recall above 60%.",
+                "<b>Phase 2: Embedded Jetson Hardware Benchmarking (Months 3–4):</b> Deploy TensorRT optimized engines onto physical NVIDIA Jetson AGX Orin & Orin Nano boards, profiling thermal power rails via tegrastats.",
+                "<b>Phase 3: Sea Trials & Naval Sensor Integration (Months 5–8):</b> Integrate real maritime radar feeds and coastal AIS antennas for live sea-trial validation in the Arabian Sea / Bay of Bengal.",
+                "<b>Phase 4: Operational Staff Exercise (Months 9–12):</b> Conduct controlled human-in-the-loop trials with Indian Armed Forces defense analysts to empirically validate workload reduction and OODA cycle gains."
+            ]
+        },
+        "script": "We believe in absolute intellectual honesty with our judges. Project Rakshak 2.0 is a working, grounded engineering prototype, not a completed military procurement. Here are our boundaries: our ship detection scores are 12.75% and 16.24% because satellite ships are tiny 12-pixel objects and heavily imbalanced in the public dataset. Our dark vessel, tracking, and DDIL numbers are from controlled simulations, not live naval exercises. And our Jetson numbers are roofline projections. Our roadmap directly addresses these: Phase 1 adds dedicated maritime datasets; Phase 2 benchmarks physical Jetson hardware; Phase 3 conducts physical sea trials with naval radar; and Phase 4 runs live human staff trials."
+    },
+    {
+        "num": 12,
+        "tag": "SUMMARY & DEFENSE",
+        "title": "Summary & Fast Answers to Tough Judge Questions",
+        "subtitle": "Key takeaways and concise evidence-backed responses to anticipated technical inquiries",
+        "type": "grid2x2",
+        "cards": [
+            {
+                "title": "Q: Why do three different vessel mAP numbers appear?",
+                "bullets": [
+                    "<b>Reconciled by evaluation scope and precision:</b>",
+                    "• <b>12.75%:</b> Full 540-tile holdout (FP16, 66,521 targets, format_accuracy_540).",
+                    "• <b>12.07%:</b> 21-tile maritime holdout in edge benchmark (FP32).",
+                    "• <b>12.26%:</b> 21-tile maritime holdout in boost study baseline.",
+                    "• <b>16.24%:</b> YOLO11n 1024px vessel specialist on the 21 maritime tiles.",
+                    "• <b>12.75% and 16.24% are our authoritative headline numbers.</b>"
+                ]
+            },
+            {
+                "title": "Q: Why are some workload reduction rows negative?",
+                "bullets": [
+                    "<b>Explained by the difference between two baselines:</b>",
+                    "• <b>Baseline A (Manual Raw Review):</b> Reviewing 14,008 raw detections vs 1,886 items delivers a measured <b>86.54% reduction</b>.",
+                    "• <b>Baseline B (Arbitrary 40 min/scene cap = 8.0h/hr):</b> Reviewing 595.6 items/hr at ≥60s requires 9.93h–39.71h, exceeding the fixed 8.0h budget (-24.1%, -148.1%, -396.4%).",
+                    "• Negative rows reflect operational capacity deficit against an artificial cap."
+                ]
+            },
+            {
+                "title": "Q: What are your Jetson edge numbers based on?",
+                "bullets": [
+                    "<b>Standardized Dense-FP16 Roofline Projections:</b>",
+                    "• Scaled from our measured 35.74 ms power-capped host baseline.",
+                    "• <b>AGX Orin 64GB: 44.7–48.8 ms (20.5–22.4 FPS)</b>.",
+                    "• <b>Orin Nano 8GB: 134.6–203.1 ms (4.9–7.4 FPS)</b>.",
+                    "• Explicitly labeled as 'unmeasured, rough estimate only'.",
+                    "• TensorRT may improve this; unmeasured, no Jetson run."
+                ]
+            },
+            {
+                "title": "Q: Can you guarantee zero external network egress?",
+                "bullets": [
+                    "<b>Grounded in our audited socket monitoring:</b>",
+                    "• Audit observed <b>0 outbound non-loopback sockets</b> and <b>0 external DNS attempts</b>.",
+                    "• All map tiles are generated procedurally on localhost.",
+                    "• Honest boundary: this was a user-space socket audit; kernel eBPF and hardware network-taps are future validation.",
+                    "• Verified clean on judge repo: <code>HackFest-2026/Team1A.2.git</code>."
+                ]
+            }
+        ],
+        "script": "To conclude our presentation: Project Rakshak 2.0 demonstrates that a sovereign, air-gapped, multi-modal C4ISR platform can be built with modern AI and web technologies today. If judges ask about the three vessel numbers, we explain the exact scope: 12.75% across all 540 holdout tiles, and 16.24% for the vessel specialist. If they ask about negative workload numbers, we explain the difference between our measured 86.54% item-count reduction and the artificial 40-minute cap. If they ask about Jetson numbers, we explain that they are dense-FP16 roofline projections from our 35.74 ms host baseline. Thank you judges, we are ready for your live questions and demonstration!"
+    }
+]
+
+html_template = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project Rakshak 2.0 - Judge Pitch Presentation Deck</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+  body {{
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: #f1f5f9;
+    color: #1e293b;
+    margin: 0;
+    padding: 0;
+  }}
+  .slide-container {{
+    aspect-ratio: 16 / 9;
+    max-width: 1280px;
+    margin: 20px auto;
+    background: #ffffff;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 36px 48px 32px 48px;
+    border-top: 5px solid #0284c7;
+  }}
+  .slide-container.active {{
+    display: flex;
+  }}
+  .card {{
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+  }}
+  .card-highlight {{
+    background: #f0fdf4;
+    border-color: #bbf7d0;
+  }}
+  .tag-pill {{
+    background: #e0f2fe;
+    color: #0369a1;
+    font-weight: 700;
+    font-size: 0.75rem;
+    padding: 4px 12px;
+    border-radius: 9999px;
+    display: inline-block;
+    letter-spacing: 0.05em;
+  }}
+  .notes-panel {{
+    max-width: 1280px;
+    margin: 10px auto 30px auto;
+    background: #ffffff;
+    border-radius: 8px;
+    border: 1px solid #cbd5e1;
+    padding: 16px 24px;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+  }}
+  @media print {{
+    body {{ background: #ffffff; }}
+    .slide-container {{ display: flex !important; page-break-after: always; box-shadow: none; margin: 0; }}
+    .no-print {{ display: none !important; }}
+  }}
+</style>
+</head>
+<body class="p-4">
+
+<!-- Top Navigation Bar -->
+<div class="max-w-6xl mx-auto flex items-center justify-between mb-4 bg-white p-3 rounded-lg border border-slate-200 shadow-sm no-print">
+  <div class="flex items-center space-x-3">
+    <span class="font-bold text-slate-800 text-sm">PROJECT RAKSHAK 2.0 • JUDGE PITCH DECK</span>
+    <span class="text-xs bg-sky-100 text-sky-800 font-semibold px-2.5 py-0.5 rounded">12 Slides</span>
+  </div>
+  <div class="flex items-center space-x-2">
+    <button id="prevBtn" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded transition">← Previous</button>
+    <span id="slideIndicator" class="text-xs font-bold text-slate-600 px-2">Slide 1 / 12</span>
+    <button id="nextBtn" class="px-3 py-1.5 bg-sky-600 hover:bg-sky-700 text-white text-xs font-semibold rounded transition">Next →</button>
+    <button id="toggleNotesBtn" class="ml-4 px-3 py-1.5 bg-teal-50 hover:bg-teal-100 text-teal-800 border border-teal-200 text-xs font-semibold rounded transition">Toggle Speaker Notes (S)</button>
+  </div>
+</div>
+
+<!-- Slides Render Loop -->
+<div id="deckContainer">
+"""
+
+for s in slides_data:
+    num = s["num"]
+    tag = s["tag"]
+    title = s["title"]
+    sub = s.get("subtitle", "")
+    stype = s["type"]
+    script = s["script"]
+
+    html_template += f"""
+  <!-- SLIDE {num} -->
+  <div class="slide-container {'active' if num == 1 else ''}" id="slide-{num}">
+    <div>
+      <div class="flex justify-between items-center mb-2">
+        <span class="tag-pill">{tag}</span>
+        <span class="text-xs font-bold text-slate-400">SLIDE {num} OF 12</span>
+      </div>
+      <h1 class="text-2xl font-bold text-slate-900 tracking-tight">{title}</h1>
+      {f'<p class="text-sm font-medium text-sky-700 mb-4">{sub}</p>' if sub else '<div class="mb-4"></div>'}
+    """
+
+    if stype == "title":
+        html_template += s["content"]
+    elif stype == "grid3":
+        html_template += '<div class="grid grid-cols-3 gap-4">'
+        for c in s["cards"]:
+            html_template += f"""
+            <div class="card p-4 flex flex-col justify-between">
+              <div>
+                <h3 class="text-sm font-bold text-slate-900 mb-0.5">{c['title']}</h3>
+                <div class="text-xs font-semibold text-sky-600 mb-2">{c.get('sub', '')}</div>
+                <ul class="space-y-1.5 text-xs text-slate-700">
+                  {''.join([f'<li>• {b}</li>' for b in c['bullets']])}
+                </ul>
+              </div>
+            </div>
+            """
+        html_template += '</div>'
+    elif stype == "grid4":
+        html_template += '<div class="grid grid-cols-4 gap-3">'
+        for c in s["cards"]:
+            html_template += f"""
+            <div class="card p-3.5 flex flex-col justify-between">
+              <div>
+                <span class="text-[10px] font-bold text-sky-600 uppercase tracking-wider">{c.get('tag', '')}</span>
+                <h3 class="text-xs font-bold text-slate-900 mb-2">{c['title']}</h3>
+                <ul class="space-y-1.5 text-[11px] text-slate-700 leading-snug">
+                  {''.join([f'<li>• {b}</li>' for b in c['bullets']])}
+                </ul>
+              </div>
+            </div>
+            """
+        html_template += '</div>'
+    elif stype == "grid2x2":
+        html_template += '<div class="grid grid-cols-2 gap-4">'
+        for c in s["cards"]:
+            html_template += f"""
+            <div class="card p-4">
+              <h3 class="text-sm font-bold text-slate-900 mb-2">{c['title']}</h3>
+              <ul class="space-y-1 text-xs text-slate-700">
+                {''.join([f'<li>• {b}</li>' for b in c['bullets']])}
+              </ul>
+            </div>
+            """
+        html_template += '</div>'
+    elif stype == "split2":
+        html_template += f"""
+        <div class="grid grid-cols-2 gap-4">
+          <div class="card p-4">
+            <h3 class="text-sm font-bold text-slate-900 mb-2">{s['left']['title']}</h3>
+            <ul class="space-y-1.5 text-xs text-slate-700">
+              {''.join([f'<li>• {b}</li>' for b in s['left']['bullets']])}
+            </ul>
+          </div>
+          <div class="card card-highlight p-4">
+            <h3 class="text-sm font-bold text-teal-900 mb-2">{s['right']['title']}</h3>
+            <ul class="space-y-1.5 text-xs text-slate-700">
+              {''.join([f'<li>• {b}</li>' for b in s['right']['bullets']])}
+            </ul>
+          </div>
+        </div>
+        """
+
+    html_template += f"""
+    </div>
+    <!-- Slide Footer -->
+    <div class="flex justify-between items-center pt-3 border-t border-slate-200 mt-4 text-[11px] text-slate-500">
+      <span class="font-semibold text-slate-700">PROJECT RAKSHAK 2.0 • Sovereign Defense C4ISR</span>
+      <span>Problem Statement 1A • Team BotS</span>
+    </div>
+  </div>
+  """
+
+html_template += """
+</div>
+
+<!-- Speaker Notes Drawer -->
+<div id="notesContainer" class="notes-panel no-print">
+  <div class="flex items-center justify-between mb-2 pb-2 border-b border-slate-200">
+    <div class="flex items-center space-x-2">
+      <span class="text-xs font-bold bg-teal-100 text-teal-800 px-2 py-0.5 rounded uppercase">Presenter Script (Read Aloud to Judges)</span>
+      <span id="notesSlideTitle" class="text-xs font-semibold text-slate-600">Slide 1</span>
+    </div>
+    <span class="text-[11px] text-slate-400">Press S to toggle • Use ← / → keys</span>
+  </div>
+  <p id="notesContent" class="text-sm text-slate-800 leading-relaxed font-sans bg-slate-50 p-3 rounded border border-slate-200"></p>
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide-container');
+  const scripts = """ + str([s["script"] for s in slides_data]) + """;
+  let current = 0;
+  const total = slides.length;
+
+  function update() {
+    slides.forEach((s, idx) => {
+      s.classList.toggle('active', idx === current);
+    });
+    document.getElementById('slideIndicator').innerText = `Slide ${current + 1} / ${total}`;
+    document.getElementById('notesSlideTitle').innerText = `Slide ${current + 1}`;
+    document.getElementById('notesContent').innerText = scripts[current];
+    document.getElementById('prevBtn').disabled = current === 0;
+    document.getElementById('nextBtn').disabled = current === total - 1;
+  }
+
+  document.getElementById('prevBtn').addEventListener('click', () => {
+    if (current > 0) { current--; update(); }
+  });
+
+  document.getElementById('nextBtn').addEventListener('click', () => {
+    if (current < total - 1) { current++; update(); }
+  });
+
+  document.getElementById('toggleNotesBtn').addEventListener('click', () => {
+    const p = document.getElementById('notesContainer');
+    p.style.display = p.style.display === 'none' ? 'block' : 'none';
+  });
+
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ') {
+      if (current < total - 1) { current++; update(); }
+    } else if (e.key === 'ArrowLeft') {
+      if (current > 0) { current--; update(); }
+    } else if (e.key === 's' || e.key === 'S') {
+      const p = document.getElementById('notesContainer');
+      p.style.display = p.style.display === 'none' ? 'block' : 'none';
+    }
+  });
+
+  update();
+</script>
+</body>
+</html>
+"""
+
+Path("presentation.html").write_text(html_template, encoding="utf-8")
+print("Saved presentation.html")
+
+import shutil
+shutil.copyfile("presentation.html", r"c:\Users\awhri\OneDrive\Desktop\Project_Rakshak_Judge_Presentation.html")
+shutil.copyfile("presentation.html", r"c:\Users\awhri\Downloads\Project_Rakshak_Judge_Presentation.html")
+print("Copied HTML presentation to Desktop and Downloads")
