@@ -21,6 +21,8 @@ import {
   STRATEGIC_HUBS
 } from './offlineGeoData';
 import { OfflineGeoOverlay } from './components/OfflineGeoOverlay';
+import { MissionPlanner } from './components/MissionPlanner';
+
 
 type Page = 'Joint COP' | 'Naval Domain' | 'Army Domain' | 'Change Detection' | 'Tactical SITREP' | 'Tactical AI (RAG)' | 'Mission Planner' | 'Edge & KPIs';
 type NavalMode = 'cv' | 'ops';
@@ -4153,99 +4155,14 @@ export function App() {
 
           {/* PAGE 5: MISSION PLANNER & INTERCEPT */}
           {page === 'Mission Planner' && (
-            <div className="mission-grid">
-              <section className="panel mission-map">
-                <div className="panel-head">
-                  <div>
-                    <div className="panel-title"><Compass size={16} /> Intercept & Patrol Route Vector</div>
-                    <small>Optimized shortest-path waypoints linking high-priority SAR dark vessels and optical contacts</small>
-                  </div>
-                </div>
-                <TacticalMap
-                  opticalItems={opticalItems}
-                  sarDetections={sarDetections}
-                  armyFeeds={armyFeeds}
-                  providerPoints={[]}
-                  zones={zones}
-                  layers={{ optical: true, sar: true, ais: false, army: false, zones: true, vectors: true, geoOverlay: true, heat: false }}
-                  flyTarget={flyTarget}
-                  fusedTracks={fusedTracks}
-                  routePoints={[
-                    [18.91, 72.84], // Mumbai Anchorage
-                    [18.892, 72.585], // Dark vessel sar-001
-                    [19.412, 71.284], // Dark vessel sar-002
-                    [14.765, 74.024]  // Karwar perimeter
-                  ]}
-                />
-              </section>
-
-              <section className="panel mission-side">
-                <div className="panel-head">
-                  <div>
-                    <div className="panel-title"><Target size={16} /> Mission Execution Sequence</div>
-                    <small>Tactical dispatch recommendations</small>
-                  </div>
-                </div>
-
-                <div style={{ padding: '15px' }}>
-                  <label className="field-label">
-                    MISSION CODENAME
-                    <input defaultValue="OPERATION SAGAR KAVACH - INTERCEPT BRAVO" />
-                  </label>
-
-                  <div className="mission-summary">
-                    <b>4</b>
-                    <span>Critical Intercept Waypoints</span>
-                  </div>
-
-                  <div className="waypoints">
-                    <div style={{ display: 'grid', gridTemplateColumns: '24px 1fr auto', gap: '6px', padding: '8px 0', borderBottom: '1px solid #1c3039' }}>
-                      <span style={{ color: '#5cd3c7', fontWeight: 700 }}>01</span>
-                      <div>
-                        <b>STATION ORIGIN: Mumbai Naval Anchorage</b>
-                        <small>Lat: 18.9100, Lon: 72.8400 · Speed: 28 kts</small>
-                      </div>
-                      <em style={{ color: '#819ba8', fontSize: '9px' }}>DEP 00:00</em>
-                    </div>
-
-                    <div style={{ display: 'grid', gridTemplateColumns: '24px 1fr auto', gap: '6px', padding: '8px 0', borderBottom: '1px solid #1c3039' }}>
-                      <span style={{ color: '#ff4d4d', fontWeight: 700 }}>02</span>
-                      <div>
-                        <b style={{ color: '#ff6b63' }}>INTERCEPT 1: Dark Vessel SAR-001</b>
-                        <small>Range: 16.8 NM · Bearing: 254° · ETA +36 min</small>
-                      </div>
-                      <em style={{ color: '#ff4d4d', fontSize: '9px' }}>THREAT 95</em>
-                    </div>
-
-                    <div style={{ display: 'grid', gridTemplateColumns: '24px 1fr auto', gap: '6px', padding: '8px 0', borderBottom: '1px solid #1c3039' }}>
-                      <span style={{ color: '#ff4d4d', fontWeight: 700 }}>03</span>
-                      <div>
-                        <b style={{ color: '#ff6b63' }}>INTERCEPT 2: Bombay High Breach SAR-002</b>
-                        <small>Range: 82.4 NM · Bearing: 298° · High-speed contact</small>
-                      </div>
-                      <em style={{ color: '#ff4d4d', fontSize: '9px' }}>THREAT 90</em>
-                    </div>
-
-                    <div style={{ display: 'grid', gridTemplateColumns: '24px 1fr auto', gap: '6px', padding: '8px 0', borderBottom: '1px solid #1c3039' }}>
-                      <span style={{ color: '#5cd3c7', fontWeight: 700 }}>04</span>
-                      <div>
-                        <b>PATROL SECTOR: INS Kadamba Buffer</b>
-                        <small>Southern Maritime EEZ Reconnaissance</small>
-                      </div>
-                      <em style={{ color: '#eab308', fontSize: '9px' }}>THREAT 88</em>
-                    </div>
-                  </div>
-
-                  <button
-                    className="button primary full-button"
-                    style={{ marginTop: '14px' }}
-                    onClick={() => setToast('Tactical Intercept Mission Plan dispatched to Air-Gapped Command Unit.')}
-                  >
-                    Dispatch Intercept Mission <ChevronRight size={15} />
-                  </button>
-                </div>
-              </section>
-            </div>
+            <MissionPlanner
+              opticalItems={opticalItems}
+              sarDetections={sarDetections}
+              armyFeeds={armyFeeds}
+              zones={zones}
+              fusedTracks={fusedTracks}
+              setToast={setToast}
+            />
           )}
 
           {/* PAGE 6: DEFENSE KPIS & EDGE HARDWARE BENCHMARKS (SWaP-C) */}
