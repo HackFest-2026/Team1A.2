@@ -1828,8 +1828,8 @@ export function App() {
             </div>
             <p>
               Target Envelope: &le;60W (unmeasured, rough estimate only)<br />
-              Latency: [10.8 ms – 23.8 ms] (unmeasured, rough estimate only)<br />
-              Rate: [42.0 – 92.6 FPS] (unmeasured, rough estimate only)
+              Latency: [44.7 ms – 48.8 ms] (unmeasured, rough estimate only, basis 35.74 ms)<br />
+              Rate: [20.5 – 22.4 FPS] (unmeasured, rough estimate only, basis 35.74 ms)
             </p>
             <div className="edge-foot">
               <span><Wifi size={13} /> 100% DDIL Ready</span>
@@ -4341,14 +4341,14 @@ export function App() {
                       </span>
                     </div>
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px', fontSize: '10px', color: '#9bb1ba' }}>
-                      <div>Wide Latency Range: <b style={{ color: '#fbbf24', fontSize: '12px' }}>[10.8 ms – 23.8 ms] (unmeasured, rough estimate only)</b></div>
-                      <div>Wide Framerate Range: <b style={{ color: '#fbbf24', fontSize: '12px' }}>[42.0 – 92.6 FPS] (unmeasured, rough estimate only)</b></div>
+                      <div>Dense-FP16 Latency: <b style={{ color: '#fbbf24', fontSize: '12px' }}>[44.7 ms – 48.8 ms] (unmeasured, rough estimate only, basis 35.74 ms)</b></div>
+                      <div>Dense-FP16 Framerate: <b style={{ color: '#fbbf24', fontSize: '12px' }}>[20.5 – 22.4 FPS] (unmeasured, rough estimate only, basis 35.74 ms)</b></div>
                       <div>Measured Power: <b style={{ color: '#9bb1ba' }}>not estimated</b> <small>(requires Jetson tegrastats rail sampling)</small></div>
                       <div>Envelope Status: <b style={{ color: '#fbbf24' }}>target envelope &le;60W (unmeasured, rough estimate only)</b></div>
                       <div style={{ gridColumn: 'span 2', fontSize: '9px', color: '#819ba8', background: '#0e181f', padding: '6px', borderRadius: '4px' }}>
-                        <div>📐 <b>Compute-Bound:</b> {telemetry?.jetson_edge_profiles?.jetson_agx_orin_64gb?.compute_bound_formula || '17.39ms * (58.2 / 42.6 Dense TFLOPs) = 23.8 ms'}</div>
-                        <div>📊 <b>Bandwidth-Bound:</b> {telemetry?.jetson_edge_profiles?.jetson_agx_orin_64gb?.bandwidth_bound_formula || '17.39ms * (256.0 / 204.8 GB/s) = 21.7 ms'}</div>
-                        <div>⚡ <b>TRT Acceleration Factor:</b> 1.3× to 2.0× speedup (Lower: 21.7ms / 2.0x = 10.8 ms [92.6 FPS]; Upper: 23.8 ms unaccelerated [42.0 FPS])</div>
+                        <div>📐 <b>Compute-Bound:</b> {telemetry?.jetson_edge_profiles?.jetson_agx_orin_64gb?.compute_bound_formula || '35.74ms * (58.2 / 42.6 Dense TFLOPs) = 48.8 ms'}</div>
+                        <div>📊 <b>Bandwidth-Bound:</b> {telemetry?.jetson_edge_profiles?.jetson_agx_orin_64gb?.bandwidth_bound_formula || '35.74ms * (256.0 / 204.8 GB/s) = 44.7 ms'}</div>
+                        <div>⚡ <b>TensorRT note:</b> TensorRT may improve this; unmeasured, no Jetson run</div>
                         <div>🔧 <b>Accumulate Mode:</b> FP16 Tensor Core arithmetic with FP32 accumulation</div>
                         <div><b>Source:</b> NVIDIA Jetson AGX Orin Series Data Sheet DS-10654-001_v1.7 Table 1 (42.6 Dense FP16 TFLOPs, 204.8 GB/s) · Host: NVIDIA Ada Whitepaper (58.2 Dense FP16 TFLOPs)</div>
                       </div>
@@ -4367,14 +4367,14 @@ export function App() {
                       </span>
                     </div>
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px', fontSize: '10px', color: '#9bb1ba' }}>
-                      <div>Wide Latency Range: <b style={{ color: '#f59e0b', fontSize: '12px' }}>[32.8 ms – 98.8 ms] (unmeasured, rough estimate only)</b></div>
-                      <div>Wide Framerate Range: <b style={{ color: '#f59e0b', fontSize: '12px' }}>[10.1 – 30.5 FPS] (unmeasured, rough estimate only)</b></div>
+                      <div>Dense-FP16 Latency: <b style={{ color: '#f59e0b', fontSize: '12px' }}>[134.6 ms – 203.1 ms] (unmeasured, rough estimate only, basis 35.74 ms)</b></div>
+                      <div>Dense-FP16 Framerate: <b style={{ color: '#f59e0b', fontSize: '12px' }}>[4.9 – 7.4 FPS] (unmeasured, rough estimate only, basis 35.74 ms)</b></div>
                       <div>Measured Power: <b style={{ color: '#9bb1ba' }}>not estimated</b> <small>(requires Jetson tegrastats rail sampling)</small></div>
                       <div>Envelope Status: <b style={{ color: '#fbbf24' }}>target envelope &le;15W (unmeasured, rough estimate only)</b></div>
                       <div style={{ gridColumn: 'span 2', fontSize: '9px', color: '#819ba8', background: '#0e181f', padding: '6px', borderRadius: '4px' }}>
-                        <div>📐 <b>Compute-Bound:</b> {telemetry?.jetson_edge_profiles?.jetson_orin_nano_8gb?.compute_bound_formula || '17.39ms * (58.2 / 10.24 Dense TFLOPs) = 98.8 ms'}</div>
-                        <div>📊 <b>Bandwidth-Bound:</b> {telemetry?.jetson_edge_profiles?.jetson_orin_nano_8gb?.bandwidth_bound_formula || '17.39ms * (256.0 / 68.0 GB/s) = 65.5 ms'}</div>
-                        <div>⚡ <b>TRT Acceleration Factor:</b> 1.3× to 2.0× speedup (Lower: 65.5ms / 2.0x = 32.8 ms [30.5 FPS]; Upper: 98.8 ms unaccelerated [10.1 FPS])</div>
+                        <div>📐 <b>Compute-Bound:</b> {telemetry?.jetson_edge_profiles?.jetson_orin_nano_8gb?.compute_bound_formula || '35.74ms * (58.2 / 10.24 Dense TFLOPs) = 203.1 ms'}</div>
+                        <div>📊 <b>Bandwidth-Bound:</b> {telemetry?.jetson_edge_profiles?.jetson_orin_nano_8gb?.bandwidth_bound_formula || '35.74ms * (256.0 / 68.0 GB/s) = 134.6 ms'}</div>
+                        <div>⚡ <b>TensorRT note:</b> TensorRT may improve this; unmeasured, no Jetson run</div>
                         <div>🔧 <b>Accumulate Mode:</b> FP16 Tensor Core arithmetic with FP32 accumulation</div>
                         <div><b>Source:</b> NVIDIA Jetson Orin Nano Series Data Sheet DS-11105-001_v1.3 Table 1 (10.24 Dense FP16 TFLOPs, 68.0 GB/s) · Host: NVIDIA Ada Whitepaper</div>
                       </div>

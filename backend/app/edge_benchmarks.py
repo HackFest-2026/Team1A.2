@@ -129,11 +129,11 @@ def get_edge_telemetry() -> Dict[str, Any]:
     agx_proj = jetson_proj.get('jetson_agx_orin_64gb', {})
     nano_proj = jetson_proj.get('jetson_orin_nano_8gb', {})
 
-    t_meas = 17.39  # Empirical boost-state baseline (spread: 17.47 +/- 0.14 ms)
-    agx_lat_range = agx_proj.get('wide_latency_range_ms', [10.8, 23.8])
-    agx_fps_range = agx_proj.get('wide_throughput_range_fps', [42.0, 92.6])
-    nano_lat_range = nano_proj.get('wide_latency_range_ms', [32.8, 98.8])
-    nano_fps_range = nano_proj.get('wide_throughput_range_fps', [10.1, 30.5])
+    t_meas = 35.74  # Empirical unboosted/power-capped baseline (steady state: 35.74 ms)
+    agx_lat_range = agx_proj.get('wide_latency_range_ms', [44.7, 48.8])
+    agx_fps_range = agx_proj.get('wide_throughput_range_fps', [20.5, 22.4])
+    nano_lat_range = nano_proj.get('wide_latency_range_ms', [134.6, 203.1])
+    nano_fps_range = nano_proj.get('wide_throughput_range_fps', [4.9, 7.4])
 
     return {
         "sovereign_air_gapped": True,
@@ -194,7 +194,7 @@ def get_edge_telemetry() -> Dict[str, Any]:
                 )
             },
             "arithmetic_accumulate_mode": "FP16 Tensor Core arithmetic with FP32 accumulation",
-            "tensorrt_speedup_factor_assumed": "1.3x to 2.0x acceleration over eager PyTorch",
+            "tensorrt_speedup_factor_assumed": "TensorRT may improve this; unmeasured, no Jetson run",
             "jetson_agx_orin_64gb": {
                 "target_platform": "NVIDIA Jetson AGX Orin 64GB (Shipboard C2 Workstation)",
                 "provenance": "MEASURED_JETSON" if jetson_data else "unmeasured; rough estimate only",
@@ -204,11 +204,11 @@ def get_edge_telemetry() -> Dict[str, Any]:
                 "wide_latency_range_ms": agx_lat_range,
                 "throughput_range_fps": agx_fps_range,
                 "wide_throughput_range_fps": agx_fps_range,
-                "unaccelerated_roofline_range_ms": [21.7, 23.8],
-                "compute_bound_formula": f"{t_meas:.2f}ms * (58.2 TFLOPs / 42.6 Dense TFLOPs) = 23.8 ms",
-                "bandwidth_bound_formula": f"{t_meas:.2f}ms * (256.0 GB/s / 204.8 GB/s) = 21.7 ms",
-                "tensorrt_speedup_formula": "Lower bound: 21.7ms / 2.0x TRT = 10.8 ms (92.6 FPS); Upper bound: 23.8ms unaccelerated = 23.8 ms (42.0 FPS)",
-                "assumptions": "42.6 Dense FP16 TFLOPs; 204.8 GB/s LPDDR5 bandwidth; FP16 TensorRT engine with FP32 accumulation; 1.3-2x TRT factor",
+                "unaccelerated_roofline_range_ms": [44.7, 48.8],
+                "compute_bound_formula": f"{t_meas:.2f}ms * (58.2 TFLOPs / 42.6 Dense TFLOPs) = 48.8 ms",
+                "bandwidth_bound_formula": f"{t_meas:.2f}ms * (256.0 GB/s / 204.8 GB/s) = 44.7 ms",
+                "tensorrt_speedup_formula": "TensorRT may improve this; unmeasured, no Jetson run",
+                "assumptions": "42.6 Dense FP16 TFLOPs; 204.8 GB/s LPDDR5 bandwidth; FP16 TensorRT engine with FP32 accumulation; dense-FP16 roofline",
                 "spec_source": "NVIDIA Jetson AGX Orin Series Data Sheet DS-10654-001_v1.7, Table 1",
                 "compliance": "target envelope, not validated"
             },
@@ -221,11 +221,11 @@ def get_edge_telemetry() -> Dict[str, Any]:
                 "wide_latency_range_ms": nano_lat_range,
                 "throughput_range_fps": nano_fps_range,
                 "wide_throughput_range_fps": nano_fps_range,
-                "unaccelerated_roofline_range_ms": [65.5, 98.8],
-                "compute_bound_formula": f"{t_meas:.2f}ms * (58.2 TFLOPs / 10.24 Dense TFLOPs) = 98.8 ms",
-                "bandwidth_bound_formula": f"{t_meas:.2f}ms * (256.0 GB/s / 68.0 GB/s) = 65.5 ms",
-                "tensorrt_speedup_formula": "Lower bound: 65.5ms / 2.0x TRT = 32.8 ms (30.5 FPS); Upper bound: 98.8ms unaccelerated = 98.8 ms (10.1 FPS)",
-                "assumptions": "10.24 Dense FP16 TFLOPs; 68.0 GB/s LPDDR5 bandwidth; FP16 TensorRT engine with FP32 accumulation; 1.3-2x TRT factor",
+                "unaccelerated_roofline_range_ms": [134.6, 203.1],
+                "compute_bound_formula": f"{t_meas:.2f}ms * (58.2 TFLOPs / 10.24 Dense TFLOPs) = 203.1 ms",
+                "bandwidth_bound_formula": f"{t_meas:.2f}ms * (256.0 GB/s / 68.0 GB/s) = 134.6 ms",
+                "tensorrt_speedup_formula": "TensorRT may improve this; unmeasured, no Jetson run",
+                "assumptions": "10.24 Dense FP16 TFLOPs; 68.0 GB/s LPDDR5 bandwidth; FP16 TensorRT engine with FP32 accumulation; dense-FP16 roofline",
                 "spec_source": "NVIDIA Jetson Orin Nano Series Data Sheet DS-11105-001_v1.3, Table 1",
                 "compliance": "target envelope, not validated"
             }

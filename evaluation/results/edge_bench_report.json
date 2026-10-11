@@ -252,53 +252,53 @@
     "status_label": "UNVALIDATED",
     "superseded_figures_status": "SUPERSEDED_ARCHIVED (19.4ms, 38.2ms, 28W, 12W figures removed from active telemetry)",
     "arithmetic_accumulate_mode": "FP16 Tensor Core arithmetic with FP32 accumulation",
-    "tensorrt_speedup_factor_assumed": "1.3x to 2.0x acceleration over eager PyTorch",
+    "tensorrt_speedup_factor_assumed": "TensorRT may improve this; unmeasured, no Jetson run",
     "tflops_sources": {
       "host_rtx4060": "58.2 Dense FP16 Tensor TFLOPs (24 SMs * 4 TC/SM * 256 FMA ops/cycle * 2.37 GHz boost; Source: NVIDIA Ada Lovelace Whitepaper & AD107 device attributes)",
       "jetson_agx_orin_64gb": "42.6 Dense FP16 Tensor TFLOPs (2,048 Ampere CUDA cores @ 1.30 GHz, 64 Tensor Cores = 42.598 TFLOPs; Source: NVIDIA Jetson AGX Orin Series Data Sheet DS-10654-001_v1.7 Table 1)",
       "jetson_orin_nano_8gb": "10.24 Dense FP16 Tensor TFLOPs (1,024 Ampere CUDA cores @ 625 MHz, 32 Tensor Cores = 10.24 TFLOPs; Source: NVIDIA Jetson Orin Nano Series Data Sheet DS-11105-001_v1.3 Table 1)"
     },
     "jetson_agx_orin_64gb": {
-      "provenance": "UNVALIDATED",
+      "provenance": "unmeasured, rough estimate only",
       "target_role": "Shipboard C2 / Western Naval Command Workstation",
       "tdp_budget_w": "target envelope <=60W, not validated",
       "measured_power_draw": "not estimated (requires Jetson tegrastats rail sampling)",
       "wide_latency_range_ms": [
-        10.8,
-        23.8
+        44.7,
+        48.8
       ],
       "wide_throughput_range_fps": [
-        42.0,
-        92.6
+        20.5,
+        22.4
       ],
       "unaccelerated_roofline_range_ms": [
-        21.7,
-        23.8
+        44.7,
+        48.8
       ],
-      "compute_bound_formula": "17.39ms * (58.2 / 42.6 Dense TFLOPs) = 23.8 ms",
-      "bandwidth_bound_formula": "17.39ms * (256.0 / 204.8 GB/s) = 21.7 ms",
-      "tensorrt_speedup_formula": "Lower bound: 21.7ms / 2.0x TRT = 10.8 ms (92.6 FPS); Upper bound: 23.8ms unaccelerated = 23.8 ms (42.0 FPS)"
+      "compute_bound_formula": "35.74ms * (58.2 / 42.6 Dense TFLOPs) = 48.8 ms",
+      "bandwidth_bound_formula": "35.74ms * (256.0 / 204.8 GB/s) = 44.7 ms",
+      "tensorrt_speedup_formula": "TensorRT may improve this; unmeasured, no Jetson run"
     },
     "jetson_orin_nano_8gb": {
-      "provenance": "UNVALIDATED",
+      "provenance": "unmeasured, rough estimate only",
       "target_role": "Tactical Drone UAV Payload (Garuda-04 Gimbal)",
       "tdp_budget_w": "target envelope <=15W, not validated",
       "measured_power_draw": "not estimated (requires Jetson tegrastats rail sampling)",
       "wide_latency_range_ms": [
-        32.8,
-        98.8
+        134.6,
+        203.1
       ],
       "wide_throughput_range_fps": [
-        10.1,
-        30.5
+        4.9,
+        7.4
       ],
       "unaccelerated_roofline_range_ms": [
-        65.5,
-        98.8
+        134.6,
+        203.1
       ],
-      "compute_bound_formula": "17.39ms * (58.2 / 10.24 Dense TFLOPs) = 98.8 ms",
-      "bandwidth_bound_formula": "17.39ms * (256.0 / 68.0 GB/s) = 65.5 ms",
-      "tensorrt_speedup_formula": "Lower bound: 65.5ms / 2.0x TRT = 32.8 ms (30.5 FPS); Upper bound: 98.8ms unaccelerated = 98.8 ms (10.1 FPS)"
+      "compute_bound_formula": "35.74ms * (58.2 / 10.24 Dense TFLOPs) = 203.1 ms",
+      "bandwidth_bound_formula": "35.74ms * (256.0 / 68.0 GB/s) = 134.6 ms",
+      "tensorrt_speedup_formula": "TensorRT may improve this; unmeasured, no Jetson run"
     }
   }
 }
