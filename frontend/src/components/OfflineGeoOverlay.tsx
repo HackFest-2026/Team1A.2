@@ -141,38 +141,39 @@ export const OfflineGeoOverlay: React.FC<OfflineGeoOverlayProps> = ({
     const fType = feature?.properties?.type;
     if (fType === 'LANDMASS') {
       return {
-        fillColor: '#122637',
-        fillOpacity: 0.95,
-        color: 'rgba(56, 189, 248, 0.45)',
-        weight: 1.0,
-        opacity: 0.8
+        fill: false,
+        fillOpacity: 0,
+        color: 'transparent',
+        weight: 0,
+        opacity: 0
       };
     }
     if (fType === 'COASTLINE') {
       return {
         color: '#00f0ff',
-        weight: 3.0,
-        opacity: 1.0
+        weight: basemapMode === 'satellite' ? 1.5 : 2.5,
+        opacity: basemapMode === 'satellite' ? 0.65 : 1.0
       };
     }
     if (fType === 'EEZ') {
       return {
         color: '#f59e0b',
-        weight: 2.2,
+        weight: 2.0,
         dashArray: '6 6',
         opacity: 0.95
       };
     }
     if (fType === 'GRATICULE') {
       return {
-        color: 'rgba(56, 189, 248, 0.25)',
+        color: 'rgba(56, 189, 248, 0.20)',
         weight: 1,
         dashArray: '3 6',
-        opacity: 0.6
+        opacity: 0.5
       };
     }
     return { color: '#00f0ff', weight: 1.5 };
   };
+
 
   return (
     <>

@@ -276,16 +276,16 @@ function TacticalMap({
     ? [validOptical[0].lat!, validOptical[0].lon!]
     : [18.92, 72.83]; // Mumbai Maritime Operational Center
 
-  type BasemapMode = 'basemap' | 'dark' | 'terrain';
-  const [basemapMode, setBasemapMode] = useState<BasemapMode>('basemap');
+  type BasemapMode = 'satellite' | 'dark' | 'terrain';
+  const [basemapMode, setBasemapMode] = useState<BasemapMode>('satellite');
   const [localGeoOverlay, setLocalGeoOverlay] = useState<boolean>(true);
-  const [showPlaceNames, setShowPlaceNames] = useState<boolean>(true);
+  const [showPlaceNames, setShowPlaceNames] = useState<boolean>(false);
   const effectiveGeoOverlay = layers.geoOverlay !== undefined ? layers.geoOverlay : localGeoOverlay;
 
   const BASEMAP_TILES: Record<string, { url: string; attr: string; maxZoom: number }> = {
-    basemap: {
-      url: '/api/tiles/basemap/{z}/{x}/{y}.png',
-      attr: 'Project Rakshak 2.0 Offline Basemap (Synthetic) — 100% Air-Gapped',
+    satellite: {
+      url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+      attr: '&copy; Esri World Imagery &mdash; Whole Earth Satellite Surveillance',
       maxZoom: 19
     },
     dark: {
@@ -323,11 +323,11 @@ function TacticalMap({
         gap: '6px'
       }}>
         <button
-          onClick={() => setBasemapMode('basemap')}
+          onClick={() => setBasemapMode('satellite')}
           style={{
-            background: basemapMode === 'basemap' ? 'rgba(6, 182, 212, 0.35)' : 'rgba(7, 18, 29, 0.85)',
-            border: `1px solid ${basemapMode === 'basemap' ? '#00f0ff' : '#1e384b'}`,
-            color: basemapMode === 'basemap' ? '#00f0ff' : '#728d9c',
+            background: basemapMode === 'satellite' ? 'rgba(6, 182, 212, 0.35)' : 'rgba(7, 18, 29, 0.85)',
+            border: `1px solid ${basemapMode === 'satellite' ? '#00f0ff' : '#1e384b'}`,
+            color: basemapMode === 'satellite' ? '#00f0ff' : '#728d9c',
             padding: '5px 10px',
             fontSize: '10px',
             borderRadius: '4px',
@@ -338,9 +338,9 @@ function TacticalMap({
             alignItems: 'center',
             gap: '5px'
           }}
-          title="Air-Gapped Sovereign Synthetic Basemap (0 External Calls)"
+          title="Whole Earth Satellite Surveillance Imagery"
         >
-          <Radar size={13} /> 🌐 Offline basemap (synthetic)
+          <Radar size={13} /> 🌐 WHOLE EARTH SATELLITE
         </button>
         <button
           onClick={() => setBasemapMode('dark')}
@@ -358,9 +358,9 @@ function TacticalMap({
             alignItems: 'center',
             gap: '5px'
           }}
-          title="Tactical Dark Gray Basemap (0 External Calls)"
+          title="Tactical Dark Gray Whole Earth Map (C4ISR Style)"
         >
-          <Shield size={13} /> 🛡️ Dark tactical (synthetic)
+          <Shield size={13} /> 🛡️ TACTICAL DARK C4ISR
         </button>
         <button
           onClick={() => setBasemapMode('terrain')}
@@ -378,10 +378,11 @@ function TacticalMap({
             alignItems: 'center',
             gap: '5px'
           }}
-          title="Tactical Bathymetry & Terrain Basemap (0 External Calls)"
+          title="Global Terrain & Bathymetry (Offline Synthetic)"
         >
-          <MapIcon size={13} /> 🗺️ Offline terrain (synthetic)
+          <MapIcon size={13} /> 🗺️ GLOBAL TERRAIN
         </button>
+
         <button
           onClick={() => setLocalGeoOverlay(v => !v)}
           style={{
@@ -679,7 +680,7 @@ function TacticalMap({
 
       <div className="map-legend">
         <span style={{ color: '#38bdf8', fontWeight: 600 }}>
-          <i className="dot" style={{ background: '#38bdf8' }} /> {basemapMode === 'basemap' ? 'Offline basemap (synthetic)' : basemapMode === 'dark' ? 'Dark tactical (synthetic)' : 'Offline terrain (synthetic)'}
+          <i className="dot" style={{ background: '#38bdf8' }} /> {basemapMode === 'satellite' ? 'Whole Earth High-Res Satellite' : basemapMode === 'dark' ? 'Tactical Dark C4ISR' : 'Offline terrain (synthetic)'}
         </span>
         <span><i className="dot" style={{ background: '#00f0ff' }} /> Fused Track (Kalman Ellipse)</span>
         <span><i className="dot" style={{ background: '#f59e0b' }} /> 200nm Indian EEZ</span>
