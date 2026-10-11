@@ -3,12 +3,12 @@
 Provides 100% offline, zero-network-egress map tiles for Leaflet.
 Generates dynamic 256x256 C4ISR seamless tactical basemap tiles:
   1. 'basemap' (alias 'satellite', 'offline'):
-     Ocean in dark blue, land filled in muted slate/earth tone, subtle coastline and graticule.
+     Dark navy ocean, muted green-brown land, subtle coastline glow.
   2. 'dark' (alias 'tactical'):
-     Near-black ocean/land with thin bright tactical cyan coastline strokes and MGRS graticule.
+     Near-black ocean, grey land, thin cyan graticule.
   3. 'terrain' (alias 'bathymetry'):
-     Deep bathymetric ocean with multi-band hypsometric shading bands on land
-     derived procedurally from geographic coordinates (labeled: "synthetic, not real elevation").
+     Light slate-blue ocean, tan-to-green land with soft elevation-style shading
+     (labeled: "(synthetic, not real elevation)").
 
 Zero external network calls (no ArcGIS, no OSM, no Mapbox, no CDN).
 """
@@ -136,14 +136,14 @@ _init_land_polygons()
 _TILE_CACHE: Dict[Tuple[str, int, int, int], bytes] = {}
 _MAX_CACHE_SIZE = 4096
 
-# Hypsometric elevation color bands for 'terrain' (lowland sage to alpine stone)
+# Hypsometric elevation color bands for 'terrain' (lowland green to upland warm tan/buff)
 _HYPSO_PALETTE = np.array([
-    [34, 58, 44],    # Band 0: Coastal plains & delta lowlands (sage green)
-    [52, 72, 46],    # Band 1: River basins & agricultural plains (olive green)
-    [74, 72, 46],    # Band 2: Deccan plateau & semi-arid uplands (khaki/buff)
-    [92, 68, 48],    # Band 3: Ghats & central highlands (warm ochre/earth)
-    [110, 88, 72],   # Band 4: Mountain slopes & escarpments (terracotta/stone)
-    [138, 132, 130]  # Band 5: High altitude peaks & passes (slate/snow)
+    [78, 108, 74],    # Band 0: Coastal plains & delta lowlands (soft muted green)
+    [106, 126, 82],   # Band 1: River basins & agricultural plains (olive/sage green)
+    [142, 138, 98],   # Band 2: Deccan plateau & semi-arid uplands (light olive-tan)
+    [165, 148, 112],  # Band 3: Ghats & central highlands (warm tan)
+    [180, 158, 126],  # Band 4: Mountain slopes & escarpments (golden/sand tan)
+    [195, 178, 152]   # Band 5: High altitude peaks & passes (light buff-stone)
 ], dtype=np.uint8)
 
 
@@ -173,29 +173,31 @@ def get_offline_tile(style: str, z: int, x: int, y: int) -> bytes:
     lon_min, lat_min, lon_max, lat_max = bbox
 
     # 1. Determine base styling parameters
+    coast_glow_stroke = None
     if normalized_style == 'basemap':
-        # Style 1: Offline basemap (synthetic)
-        # Land in muted tone, sea in dark blue
-        bg_color = (14, 30, 48)       # Deep maritime blue sea
-        land_color = (36, 50, 58)     # Muted slate/earth tone land
-        coast_stroke = (56, 88, 102)  # Soft coastline boundary
-        grid_color = (20, 42, 64)     # Geodetic MGRS graticule
+        # Style 1: Satellite-style (synthetic basemap)
+        # Dark navy ocean, muted green-brown land, subtle coastline glow
+        bg_color = (10, 24, 42)          # Dark navy ocean
+        land_color = (50, 62, 42)        # Muted green-brown land
+        coast_stroke = (72, 135, 148)    # Core coastline boundary stroke
+        coast_glow_stroke = (28, 70, 85) # Subtle coastline glow
+        grid_color = (18, 36, 58)        # Geodetic MGRS graticule
         coast_width = 1
     elif normalized_style == 'dark':
         # Style 2: Dark tactical (synthetic)
-        # Near-black with thin bright coastline strokes and graticule
-        bg_color = (6, 10, 14)        # Covert near-black sea
-        land_color = (12, 17, 24)     # Charcoal tactical dark land
-        coast_stroke = (0, 240, 255)  # Thin bright tactical cyan coastline
-        grid_color = (24, 48, 68)     # Tactical coordinate mesh
+        # Near-black ocean, grey land, thin cyan graticule
+        bg_color = (6, 8, 12)            # Near-black ocean
+        land_color = (34, 38, 44)        # Grey land
+        coast_stroke = (0, 230, 255)     # Thin tactical cyan coastline
+        grid_color = (0, 175, 200)       # Thin cyan graticule
         coast_width = 1
     else:
         # Style 3: Offline terrain (synthetic)
-        # Deep bathymetry sea, land with hypsometric-style shading bands
-        bg_color = (8, 22, 36)        # Deep oceanic bathymetry
-        land_color = (34, 58, 44)     # Base lowland tint
-        coast_stroke = (45, 80, 105)  # Bathymetric shelf boundary
-        grid_color = (22, 48, 66)     # Bathymetric/topographic mesh
+        # Light slate-blue ocean, tan-to-green land with soft elevation-style shading
+        bg_color = (52, 82, 110)         # Light slate-blue ocean
+        land_color = (106, 126, 82)      # Base tan-to-green lowland tint
+        coast_stroke = (75, 105, 125)    # Soft shelf boundary stroke
+        grid_color = (65, 96, 124)       # Muted slate coordinate mesh
         coast_width = 1
 
     # 2. Render Land Polygons into Mask
@@ -253,6 +255,8 @@ def get_offline_tile(style: str, z: int, x: int, y: int) -> bytes:
     # 4. Draw Coastline Strokes
     if has_land and coastal_lines:
         for pts in coastal_lines:
+            if coast_glow_stroke:
+                draw.line(pts, fill=coast_glow_stroke, width=3)
             draw.line(pts, fill=coast_stroke, width=coast_width)
 
     # 5. Draw Geodetic Graticule Lines (MGRS Military Grid) seamlessly
@@ -294,7 +298,7 @@ def get_offline_tile(style: str, z: int, x: int, y: int) -> bytes:
     if normalized_style == 'terrain' and z <= 6:
         try:
             font = ImageFont.load_default()
-            draw.text((6, 242), "(synthetic, not real elevation)", fill=(40, 75, 95), font=font)
+            draw.text((6, 242), "(synthetic, not real elevation)", fill=(190, 215, 230), font=font)
         except Exception:
             pass
 
